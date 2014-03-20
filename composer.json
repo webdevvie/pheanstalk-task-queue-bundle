@@ -1,0 +1,16 @@
+{
+    "name": "webdevvie/pheanstalk-task-queue-bundle",
+    "description": "A task queue / worker bundle for use with symfony2, leezy/pheanstalk and pda/pheanstalk",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "John Bakker",
+            "email": "me@johnbakker.name"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+		"leezy/pheanstalk-bundle": "2.*",
+		"jms/serializer-bundle": "0.13.*"
+    }
+}

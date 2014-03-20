@@ -1,0 +1,12 @@
+services:
+    webdevvie_taskqueue.service:
+        class: Webdevvie\TaskQueueBundle\Service\TaskQueueService
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @leezy.pheanstalk
+            - @serializer
+            - %webdevvie_taskqueue.params%
+
+    webdevvie_taskqueue.task_command_generator:
+        class: Webdevvie\TaskQueueBundle\Service\TaskCommandGenerator
+
