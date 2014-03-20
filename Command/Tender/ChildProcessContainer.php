@@ -1,15 +1,15 @@
 <?php
 
-namespace Webdevvie\TaskQueueBundle\Command\Tender;
+namespace Webdevvie\PheanstalkTaskQueueBundle\Command\Tender;
 
 use Leezy\PheanstalkBundle\Proxy\PheanstalkProxy;
 use JMS\Serializer\Serializer;
-use Webdevvie\TaskQueueBundle\TaskDescription\TaskDescriptionInterface;
-use Webdevvie\TaskQueueBundle\Service\Exception\TaskQueueServiceException;
+use Webdevvie\PheanstalkTaskQueueBundle\TaskDescription\TaskDescriptionInterface;
+use Webdevvie\PheanstalkTaskQueueBundle\Service\Exception\TaskQueueServiceException;
 use Symfony\Component\Process\Exception\LogicException;
 use Symfony\Component\Process\Process;
-use Webdevvie\TaskQueueBundle\Command\WorkerTenderCommand;
-use Webdevvie\TaskQueueBundle\Command\AbstractWorker;
+use Webdevvie\PheanstalkTaskQueueBundle\Command\WorkerTenderCommand;
+use Webdevvie\PheanstalkTaskQueueBundle\Command\AbstractWorker;
 
 /**
  * Class ChildProcessContainer

@@ -1,20 +1,20 @@
 <?php
 
-namespace Webdevvie\TaskQueueBundle\Command;
+namespace Webdevvie\PheanstalkTaskQueueBundle\Command;
 
 
 use JMS\Serializer\SerializerBuilder;
-use Webdevvie\TaskQueueBundle\Command\AbstractWorker;
-use Webdevvie\TaskQueueBundle\Service\DTO\WorkPackage;
-use Webdevvie\TaskQueueBundle\Service\Exception\TaskCommandGeneratorException;
-use Webdevvie\TaskQueueBundle\Service\Exception\TaskQueueServiceException;
+use Webdevvie\PheanstalkTaskQueueBundle\Command\AbstractWorker;
+use Webdevvie\PheanstalkTaskQueueBundle\Service\DTO\WorkPackage;
+use Webdevvie\PheanstalkTaskQueueBundle\Service\Exception\TaskCommandGeneratorException;
+use Webdevvie\PheanstalkTaskQueueBundle\Service\Exception\TaskQueueServiceException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
-use Webdevvie\TaskQueueBundle\Entity\Task;
-use Webdevvie\TaskQueueBundle\Service\TaskCommandGenerator;
+use Webdevvie\PheanstalkTaskQueueBundle\Entity\Task;
+use Webdevvie\PheanstalkTaskQueueBundle\Service\TaskCommandGenerator;
 
 /**
  * Class WorkerCommand
@@ -28,7 +28,7 @@ use Webdevvie\TaskQueueBundle\Service\TaskCommandGenerator;
 class WorkerCommand extends AbstractWorker
 {
     /**
-     * @var \Webdevvie\TaskQueueBundle\Service\TaskCommandGenerator;
+     * @var \Webdevvie\PheanstalkTaskQueueBundle\Service\TaskCommandGenerator;
      */
     private $taskCommandGenerator;
 
@@ -55,10 +55,9 @@ class WorkerCommand extends AbstractWorker
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->initialiseWorker($input, $output);
-        $this->taskCommandGenerator = $this->getContainer()->get('webdevvie_taskqueue.task_command_generator');
+        $this->taskCommandGenerator = $this->getContainer()->get('webdevvie_pheanstalk_taskqueue.task_command_generator');
         $this->verboseOutput("<info>Taskworker observing tube:</info>" . $this->tube);
         while ($this->keepWorking) {
-
             try {
                 $taskObject = $this->taskQueueService->reserveTask($this->tube);
             } catch (TaskQueueServiceException $exception) {

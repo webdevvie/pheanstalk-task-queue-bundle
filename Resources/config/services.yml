@@ -1,12 +1,13 @@
+parameters:
+
 services:
-    webdevvie_taskqueue.service:
-        class: Webdevvie\TaskQueueBundle\Service\TaskQueueService
+    webdevvie_pheanstalktaskqueue.service:
+        class: Webdevvie\PheanstalkTaskQueueBundle\Service\TaskQueueService
         arguments:
             - @doctrine.orm.entity_manager
             - @leezy.pheanstalk
-            - @serializer
+            - @jms_serializer
             - %webdevvie_taskqueue.params%
 
-    webdevvie_taskqueue.task_command_generator:
-        class: Webdevvie\TaskQueueBundle\Service\TaskCommandGenerator
-
+    webdevvie_pheanstalktaskqueue.task_command_generator:
+        class: Webdevvie\PheanstalkTaskQueueBundle\Service\TaskCommandGenerator

@@ -1,9 +1,9 @@
 <?php
 
-namespace Webdevvie\TaskQueueBundle\Service\DTO;
+namespace Webdevvie\PheanstalkTaskQueueBundle\Service\DTO;
 
-use Webdevvie\TaskQueueBundle\Entity\Task;
-use Webdevvie\TaskQueueBundle\TaskDescription\TaskDescriptionInterface;
+use Webdevvie\PheanstalkTaskQueueBundle\Entity\Task;
+use Webdevvie\PheanstalkTaskQueueBundle\TaskDescription\TaskDescriptionInterface;
 use \Pheanstalk_Job;
 
 /**
@@ -11,7 +11,7 @@ use \Pheanstalk_Job;
  * This class is used by the TaskQueueService and the WorkerCommand to handle workload for the worker. This
  * object is passed around between the TaskQueueService and the WorkerCommand.
  *
- * @package Webdevvie\TaskQueueBundle\Service\DTO
+ * @package Webdevvie\PheanstalkTaskQueueBundle\Service\DTO
  * @author John Bakker <me@johnbakker.name
  */
 class WorkPackage

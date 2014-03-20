@@ -1,20 +1,20 @@
 <?php
 
-namespace Webdevvie\TaskQueueBundle\Tests\Service;
+namespace Webdevvie\PheanstalkTaskQueueBundle\Tests\Service;
 
 
 use JMS\Serializer\SerializerBuilder;
-use Webdevvie\TaskQueueBundle\Service\DTO\WorkPackage;
-use Webdevvie\TaskQueueBundle\Command\Example\TaskDescription\ExampleTaskDescription;
+use Webdevvie\PheanstalkTaskQueueBundle\Service\DTO\WorkPackage;
+use Webdevvie\PheanstalkTaskQueueBundle\Command\Example\TaskDescription\ExampleTaskDescription;
 use Symfony\Component\Serializer\Serializer;
-use Webdevvie\TaskQueueBundle\Entity\Task;
-use Webdevvie\TaskQueueBundle\Entity\TaskRepository;
-use Webdevvie\TaskQueueBundle\Service\TaskQueueService;
+use Webdevvie\PheanstalkTaskQueueBundle\Entity\Task;
+use Webdevvie\PheanstalkTaskQueueBundle\Entity\TaskRepository;
+use Webdevvie\PheanstalkTaskQueueBundle\Service\TaskQueueService;
 use Mockery;
 
 /**
  * For testing the task queue service
- * @package Webdevvie\TaskQueueBundle\Tests\Service
+ * @package Webdevvie\PheanstalkTaskQueueBundle\Tests\Service
  * @author John Bakker <me@johnbakker.name
  */
 class TaskQueueServiceTest extends \PHPUnit_Framework_TestCase
@@ -203,18 +203,18 @@ class TaskQueueServiceTest extends \PHPUnit_Framework_TestCase
         );
         $workPackage = $service->reserveTask();
         $this->assertInstanceOf(
-            '\Webdevvie\TaskQueueBundle\Service\DTO\WorkPackage',
+            '\Webdevvie\PheanstalkTaskQueueBundle\Service\DTO\WorkPackage',
             $workPackage,
             'Received class is not of class WorkPackage'
         );
 
         $this->assertInstanceOf(
-            '\Webdevvie\TaskQueueBundle\Command\Example\TaskDescription\ExampleTaskDescription',
+            '\Webdevvie\PheanstalkTaskQueueBundle\Command\Example\TaskDescription\ExampleTaskDescription',
             $workPackage->getTaskDescription(),
             'Received class is not of class ExampleTask'
         );
         $this->assertInstanceOf(
-            '\Webdevvie\TaskQueueBundle\Entity\Task',
+            '\Webdevvie\PheanstalkTaskQueueBundle\Entity\Task',
             $workPackage->getTaskEntity(),
             'Received class is not of class Task'
         );
@@ -286,7 +286,7 @@ class TaskQueueServiceTest extends \PHPUnit_Framework_TestCase
      */
     public function setupTaskRepository()
     {
-        $this->taskRepository = \Mockery::mock('\Webdevvie\TaskQueueBundle\Entity\TaskRepository');
+        $this->taskRepository = \Mockery::mock('\Webdevvie\PheanstalkTaskQueueBundle\Entity\TaskRepository');
     }
 
     /**

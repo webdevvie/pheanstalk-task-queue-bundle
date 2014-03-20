@@ -1,8 +1,8 @@
 <?php
 
-namespace Webdevvie\TaskQueueBundle\TaskDescription;
+namespace Webdevvie\PheanstalkTaskQueueBundle\TaskDescription;
 
-use Webdevvie\TaskQueueBundle\Entity\Task;
+use Webdevvie\PheanstalkTaskQueueBundle\Entity\Task;
 use JMS\Serializer\SerializerBuilder;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Type;
@@ -15,7 +15,7 @@ use Pheanstalk_Job;
  * Takes care of some basic functionality like returning the right data so you
  * don't have to implement these in each task description
  *
- * @package Webdevvie\TaskQueueBundle\TaskDescription
+ * @package Webdevvie\PheanstalkTaskQueueBundle\TaskDescription
  * @ExclusionPolicy("all")
  */
 abstract class AbstractTaskDescription implements TaskDescriptionInterface
@@ -67,7 +67,7 @@ abstract class AbstractTaskDescription implements TaskDescriptionInterface
      */
     public function getOptions()
     {
-        $options = [];
+        $options = array();
         foreach ($this->commandOptions as $key => $value) {
             $options[$key]=$this->$value;
         }
@@ -81,7 +81,7 @@ abstract class AbstractTaskDescription implements TaskDescriptionInterface
      */
     public function getArguments()
     {
-        $arguments = [];
+        $arguments = array();
         foreach ($this->commandArguments as $argument) {
             $arguments[] = $this->$argument;
         }

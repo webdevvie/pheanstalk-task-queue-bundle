@@ -1,16 +1,16 @@
 <?php
 
-namespace Webdevvie\TaskQueueBundle\Entity;
+namespace Webdevvie\PheanstalkTaskQueueBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Webdevvie\TaskQueueBundle\TaskDescription\TaskDescriptionInterface;
+use Webdevvie\PheanstalkTaskQueueBundle\TaskDescription\TaskDescriptionInterface;
 
 /**
  * Task entity
  * Used by the TaskQueueService as place to store the status of the Tasks
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="Webdevvie\TaskQueueBundle\Entity\TaskRepository")
+ * @ORM\Entity(repositoryClass="Webdevvie\PheanstalkTaskQueueBundle\Entity\TaskRepository")
  */
 class Task
 {

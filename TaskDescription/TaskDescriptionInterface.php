@@ -1,15 +1,15 @@
 <?php
 
-namespace Webdevvie\TaskQueueBundle\TaskDescription;
+namespace Webdevvie\PheanstalkTaskQueueBundle\TaskDescription;
 
 use Pheanstalk_Job;
-use Webdevvie\TaskQueueBundle\Entity\Task;
+use Webdevvie\PheanstalkTaskQueueBundle\Entity\Task;
 
 /**
  * The interface all task descriptions should adhere to.
  * Task descriptions are used to describe some of the work to be done on the backend.
  *
- * @package Webdevvie\TaskQueueBundle\TaskDescription
+ * @package Webdevvie\PheanstalkTaskQueueBundle\TaskDescription
  * @author John Bakker <me@johnbakker.name
  */
 interface TaskDescriptionInterface

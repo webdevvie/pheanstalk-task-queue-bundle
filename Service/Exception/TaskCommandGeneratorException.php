@@ -1,6 +1,6 @@
 <?php
 
-namespace Webdevvie\TaskQueueBundle\Service\Exception;
+namespace Webdevvie\PheanstalkTaskQueueBundle\Service\Exception;
 
 /**
  * an exception to throw

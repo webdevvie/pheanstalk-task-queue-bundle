@@ -1,6 +1,6 @@
 <?php
 
-namespace Webdevvie\TaskQueueBundle\Entity;
+namespace Webdevvie\PheanstalkTaskQueueBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 

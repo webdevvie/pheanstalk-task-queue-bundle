@@ -1,10 +1,10 @@
 <?php
 
-namespace Webdevvie\TaskQueueBundle\Service;
+namespace Webdevvie\PheanstalkTaskQueueBundle\Service;
 
-use Webdevvie\TaskQueueBundle\Service\Exception\TaskCommandGeneratorException;
-use Webdevvie\TaskQueueBundle\TaskDescription\TaskDescriptionInterface;
-use Webdevvie\TaskQueueBundle\Service\DTO\WorkPackage;
+use Webdevvie\PheanstalkTaskQueueBundle\Service\Exception\TaskCommandGeneratorException;
+use Webdevvie\PheanstalkTaskQueueBundle\TaskDescription\TaskDescriptionInterface;
+use Webdevvie\PheanstalkTaskQueueBundle\Service\DTO\WorkPackage;
 
 /**
  * Generates the command string from a WorkPackage's TaskDescription property

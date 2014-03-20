@@ -1,16 +1,16 @@
 <?php
 
-namespace Webdevvie\TaskQueueBundle\Tests\Service;
+namespace Webdevvie\PheanstalkTaskQueueBundle\Tests\Service;
 
-use Webdevvie\TaskQueueBundle\Entity\Task;
-use Webdevvie\TaskQueueBundle\Service\DTO\WorkPackage;
-use Webdevvie\TaskQueueBundle\Service\TaskCommandGenerator;
-use Webdevvie\TaskQueueBundle\Command\Example\TaskDescription\ExampleTaskDescription;
+use Webdevvie\PheanstalkTaskQueueBundle\Entity\Task;
+use Webdevvie\PheanstalkTaskQueueBundle\Service\DTO\WorkPackage;
+use Webdevvie\PheanstalkTaskQueueBundle\Service\TaskCommandGenerator;
+use Webdevvie\PheanstalkTaskQueueBundle\Command\Example\TaskDescription\ExampleTaskDescription;
 
 /**
  * For testing the task command generator
  *
- * @package Webdevvie\TaskQueueBundle\Tests\Service
+ * @package Webdevvie\PheanstalkTaskQueueBundle\Tests\Service
  * @author John Bakker <me@johnbakker.name
  */
 class TaskCommandGeneratorTest extends \PHPUnit_Framework_TestCase

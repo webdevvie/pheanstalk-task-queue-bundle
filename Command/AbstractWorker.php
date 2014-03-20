@@ -1,12 +1,12 @@
 <?php
-namespace Webdevvie\TaskQueueBundle\Command;
+namespace Webdevvie\PheanstalkTaskQueueBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Webdevvie\TaskQueueBundle\Service\TaskQueueService;
+use Webdevvie\PheanstalkTaskQueueBundle\Service\TaskQueueService;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Psr\Log\LoggerInterface;
 
@@ -15,13 +15,13 @@ use Psr\Log\LoggerInterface;
  * Is a base for the other commands. A place to add options that should be used for all workers.
  * It simplifies the implementation of your own tasks and handling of signals for looping processes.
  *
- * @package Webdevvie\TaskQueueBundle\Command
+ * @package Webdevvie\PheanstalkTaskQueueBundle\Command
  * @author John Bakker <me@johnbakker.name>
  */
 abstract class AbstractWorker extends ContainerAwareCommand
 {
     /**
-     * @var \Webdevvie\TaskQueueBundle\Service\TaskQueueService
+     * @var \Webdevvie\PheanstalkTaskQueueBundle\Service\TaskQueueService
      */
     protected $taskQueueService;
 
@@ -113,15 +113,15 @@ abstract class AbstractWorker extends ContainerAwareCommand
         $this->container = $this->getContainer();
         $this->logger = $this->container->get('logger');
         $this->consolePath = $this->container->get('kernel')->getRootDir().'/../';
-        $this->taskQueueService = $this->container->get('webdevvie_taskqueue.service');
+        $this->taskQueueService = $this->container->get('webdevvie_pheanstalktaskqueue.service');
         $this->tube = $this->input->getOption('use-tube');
         if (strlen($this->tube) == 0) {
             $this->tube = $this->taskQueueService->getDefaultTube();
         }
         //make sure signals are respected
         declare(ticks = 1);
-        pcntl_signal(SIGTERM, [$this, "sigTerm"]);
-        pcntl_signal(SIGINT, [$this, "sigInt"]);
+        pcntl_signal(SIGTERM, array($this, "sigTerm"));
+        pcntl_signal(SIGINT, array($this, "sigInt"));
     }
 
     /**
@@ -134,13 +134,13 @@ abstract class AbstractWorker extends ContainerAwareCommand
     {
         $this->logger->error(
             $exception->getMessage(),
-            [
+            array(
                 'class'=>get_class($exception),
                 'message'=>$exception->getMessage(),
                 'file'=>$exception->getMessage(),
                 'line'=>$exception->getMessage(),
                 'command'=>$this->getName()
-            ]
+            )
         );
     }
 

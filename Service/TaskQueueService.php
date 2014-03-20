@@ -1,16 +1,16 @@
 <?php
 
-namespace Webdevvie\TaskQueueBundle\Service;
+namespace Webdevvie\PheanstalkTaskQueueBundle\Service;
 
 use JMS\Serializer\Exception\UnsupportedFormatException;
 use Leezy\PheanstalkBundle\Proxy\PheanstalkProxy;
 use JMS\Serializer\Serializer;
-use Webdevvie\TaskQueueBundle\Service\DTO\WorkPackage;
-use Webdevvie\TaskQueueBundle\TaskDescription\TaskDescriptionInterface;
-use Webdevvie\TaskQueueBundle\Service\Exception\TaskQueueServiceException;
+use Webdevvie\PheanstalkTaskQueueBundle\Service\DTO\WorkPackage;
+use Webdevvie\PheanstalkTaskQueueBundle\TaskDescription\TaskDescriptionInterface;
+use Webdevvie\PheanstalkTaskQueueBundle\Service\Exception\TaskQueueServiceException;
 use Doctrine\ORM\EntityManager;
-use Webdevvie\TaskQueueBundle\Entity\Task;
-use Webdevvie\TaskQueueBundle\Entity\TaskRepository;
+use Webdevvie\PheanstalkTaskQueueBundle\Entity\Task;
+use Webdevvie\PheanstalkTaskQueueBundle\Entity\TaskRepository;
 
 /**
  * Handles all communication with Beanstalkd queue and the task entity
@@ -43,7 +43,7 @@ class TaskQueueService
     private $entityManager;
 
     /**
-     * @var \Webdevvie\TaskQueueBundle\Entity\TaskRepository
+     * @var \Webdevvie\PheanstalkTaskQueueBundle\Entity\TaskRepository
      */
     private $taskRepo;
 
@@ -63,7 +63,7 @@ class TaskQueueService
         $this->beanstalk = $beanstalk;
         $this->serializer = $serializer;
         $this->entityManager = $entityManager;
-        $this->taskRepo = $this->entityManager->getRepository('WebdevvieTaskQueueBundle:Task');
+        $this->taskRepo = $this->entityManager->getRepository('WebdevviePheanstalkTaskQueueBundle:Task');
         $this->defaultTube = $params['default_tube'];
     }
 
@@ -143,12 +143,12 @@ class TaskQueueService
     {
         $query = $this->entityManager->createQuery(
             'DELETE
-            FROM WebdevvieTaskQueueBundle:Task t
+            FROM WebdevviePheanstalkTaskQueueBundle:Task t
             WHERE
             t.status = :status and
             t.created <= :older'
         );
-        $query->setParameter('status', [Task::STATUS_DONE]);
+        $query->setParameter('status', array(Task::STATUS_DONE));
         $query->setParameter('older', date("Y-m-d H:i:s", time()-$timePeriod));
         $query->execute();
     }

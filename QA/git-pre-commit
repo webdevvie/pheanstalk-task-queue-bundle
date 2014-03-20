@@ -1,0 +1,39 @@
+#!/usr/bin/env php
+
+<?php
+
+$projectName = basename(getcwd());
+
+
+exec("bin/phpcs --standard=psr2 ./src",$output,$returnCode);
+if(count($output)>0)
+{
+    printf("PHPCS for %s failed: ", $projectName);
+    echo implode("\n",$output);
+    exit(1);
+}
+echo "PHPCS success!\n";
+
+$output=array();
+exec("bin/phpmd src/ text codesize,unusedcode,naming,design,controversial",$output,$returnCode);
+if(count($output)>1)
+{
+    printf("PHPMD for %s failed: ", $projectName);
+    echo implode("\n",$output);
+    exit(1);
+
+}
+echo "PHPMD success!\n";
+$output=array();
+
+exec('bin/phpunit -c app src/', $output, $returnCode);
+
+if ($returnCode !== 0) {
+  printf("Test suite for %s failed: ", $projectName);
+  echo implode("\n",$output);
+  printf("ABORTING COMMIT!\n");
+  exit(1);
+}
+echo "PHPUNIT success!\n";
+
+exit(0);

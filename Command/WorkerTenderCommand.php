@@ -1,11 +1,11 @@
 <?php
 
-namespace Webdevvie\TaskQueueBundle\Command;
+namespace Webdevvie\PheanstalkTaskQueueBundle\Command;
 
 
 use JMS\Serializer\SerializerBuilder;
-use Webdevvie\TaskQueueBundle\Command\AbstractWorker;
-use Webdevvie\TaskQueueBundle\Command\Tender\ChildProcessContainer;
+use Webdevvie\PheanstalkTaskQueueBundle\Command\AbstractWorker;
+use Webdevvie\PheanstalkTaskQueueBundle\Command\Tender\ChildProcessContainer;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -112,7 +112,7 @@ class WorkerTenderCommand extends AbstractWorker
             $child->getReadyForBed();
         }
         //send old children to bed (kill em off)
-        $readyStatusses = [ChildProcessContainer::STATUS_READY, ChildProcessContainer::STATUS_ALIVE];
+        $readyStatusses = array(ChildProcessContainer::STATUS_READY, ChildProcessContainer::STATUS_ALIVE);
         if ($child->getAge() >= $this->input->getOption('max-worker-age') &&
             in_array($child->status, $readyStatusses)
         ) {
@@ -192,7 +192,7 @@ class WorkerTenderCommand extends AbstractWorker
                     break;
             }
         }
-        return [$total, $busy, $available];
+        return array($total, $busy, $available);
     }
 
     /**
@@ -225,7 +225,7 @@ class WorkerTenderCommand extends AbstractWorker
             //we have more than enough workers for the amount of work we should probably kill one off.
             $shouldHaveLessWorkers = true;
         }
-        return [$shouldHaveLessWorkers, $shouldHaveMoreWorkers];
+        return array($shouldHaveLessWorkers, $shouldHaveMoreWorkers);
     }
 
     /**
@@ -236,7 +236,7 @@ class WorkerTenderCommand extends AbstractWorker
     private function findDisposableWorkers()
     {
         foreach ($this->family as &$child) {
-            if (in_array($child->status, [ChildProcessContainer::STATUS_READY, ChildProcessContainer::STATUS_ALIVE])) {
+            if (in_array($child->status, array(ChildProcessContainer::STATUS_READY, ChildProcessContainer::STATUS_ALIVE))) {
                 if ($child->getAge() < 10) {
                     //less than ten seconds old keep it alive a bit to let its do its job
                     continue;

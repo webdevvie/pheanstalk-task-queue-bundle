@@ -1,10 +1,10 @@
 <?php
 
-namespace Webdevvie\TaskQueueBundle\Command\Example;
+namespace Webdevvie\PheanstalkTaskQueueBundle\Command\Example;
 
 
-use Webdevvie\TaskQueueBundle\Command\AbstractWorker;
-use Webdevvie\TaskQueueBundle\Command\Example\TaskDescription\ExampleTaskDescription;
+use Webdevvie\PheanstalkTaskQueueBundle\Command\AbstractWorker;
+use Webdevvie\PheanstalkTaskQueueBundle\Command\Example\TaskDescription\ExampleTaskDescription;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;

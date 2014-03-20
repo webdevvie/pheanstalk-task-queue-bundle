@@ -1,6 +1,6 @@
 <?php
 
-namespace Webdevvie\TaskQueueBundle\Command\Example;
+namespace Webdevvie\PheanstalkTaskQueueBundle\Command\Example;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;

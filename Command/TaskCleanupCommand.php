@@ -1,12 +1,12 @@
 <?php
 
-namespace Webdevvie\TaskQueueBundle\Command;
+namespace Webdevvie\PheanstalkTaskQueueBundle\Command;
 
-use Webdevvie\TaskQueueBundle\Command\AbstractWorker;
+use Webdevvie\PheanstalkTaskQueueBundle\Command\AbstractWorker;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Webdevvie\TaskQueueBundle\Entity\Task;
+use Webdevvie\PheanstalkTaskQueueBundle\Entity\Task;
 
 /**
  * Class TaskCleanupCommand

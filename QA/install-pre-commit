@@ -1,0 +1,6 @@
+#!/bin/bash
+cd .git
+mkdir -p hooks
+cd hooks
+rm -f pre-commit
+ln -s ../../QA/git-pre-commit pre-commit
