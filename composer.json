@@ -13,6 +13,7 @@
     "type": "symfony-bundle",
     "minimum-stability": "dev",
     "require": {
+        "php": ">=5.3.0",
 		"leezy/pheanstalk-bundle": "2.*",
 		"jms/serializer-bundle": "0.13.*"
     },
@@ -29,7 +30,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "dev"
+            "dev-master": "0.1-dev"
         }
     },
     "target-dir": "Webdevvie/PheanstalkTaskQueueBundle"
