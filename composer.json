@@ -1,13 +1,16 @@
 {
     "name": "webdevvie/pheanstalk-task-queue-bundle",
     "description": "A task queue / worker bundle for use with symfony2, leezy/pheanstalk and pda/pheanstalk",
+    "keywords": ["symfony", "beanstalkd", "bundle", "pheanstalk", "worker"],
     "license": "Apache-2.0",
     "authors": [
         {
             "name": "John Bakker",
-            "email": "me@johnbakker.name"
+            "email": "me@johnbakker.name",
+            "homepage": "http://www.johnbakker.name"
         }
     ],
+    "type": "symfony-bundle",
     "minimum-stability": "dev",
     "require": {
 		"leezy/pheanstalk-bundle": "2.*",
@@ -20,5 +23,14 @@
     },
     "config": {
         "bin-dir": "bin"
-    }
+    },
+    "autoload": {
+        "psr-0": { "Webdevvie\\PheanstalkTaskQueueBundle": "" }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "dev"
+        }
+    },
+    "target-dir": "Webdevvie/PheanstalkTaskQueueBundle"
 }
