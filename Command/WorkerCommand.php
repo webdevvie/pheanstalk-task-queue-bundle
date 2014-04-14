@@ -55,7 +55,9 @@ class WorkerCommand extends AbstractWorker
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->initialiseWorker($input, $output);
-        $this->taskCommandGenerator = $this->getContainer()->get('webdevvie_pheanstalk_taskqueue.task_command_generator');
+        $this->taskCommandGenerator = $this->getContainer()->get(
+            'webdevvie_pheanstalk_taskqueue.task_command_generator'
+        );
         $this->verboseOutput("<info>Taskworker observing tube:</info>" . $this->tube);
         while ($this->keepWorking) {
             try {
@@ -70,7 +72,7 @@ class WorkerCommand extends AbstractWorker
             } elseif (is_object($taskObject)) {
                 $this->verboseOutput("Ignoring type:" . get_class($taskObject));
             }
-            if ($this->shutdownNow) {
+            if ($this->shutdownNow || $this->shutdownGracefully) {
                 $this->keepWorking = false;
             }
         }
@@ -109,12 +111,12 @@ class WorkerCommand extends AbstractWorker
                 $exitCodeText
             );
             $incOut = $process->getIncrementalOutput();
-            if (strlen($incOut)>0) {
+            if (strlen($incOut) > 0) {
                 $this->output->write($incOut);
             }
         }
         if ($failed) {
-            $this->verboseOutput("FAILED CHILD: ". $exitCode . "::" . $exitCodeText);
+            $this->verboseOutput("FAILED CHILD: " . $exitCode . "::" . $exitCodeText);
             $this->taskQueueService->markFailed($taskObject);
         } else {
             $this->taskQueueService->markDone($taskObject);
@@ -155,8 +157,8 @@ class WorkerCommand extends AbstractWorker
                 $this->output->write("[RECEIVED SIGNAL] Shutting down now!");
                 $process->stop(0);
                 $hasReceivedSignal = true;
-                $this->keepWorking=false;
-                $runningCommand=false;
+                $this->keepWorking = false;
+                $runningCommand = false;
             }
             if ((!$this->keepWorking || $this->shutdownGracefully)) {
                 //we need to keep this running until we are finished...
