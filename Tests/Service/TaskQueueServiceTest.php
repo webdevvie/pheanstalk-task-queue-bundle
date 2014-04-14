@@ -59,6 +59,49 @@ class TaskQueueServiceTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test if the proper status is returned in case a task is not found for the Id
+     *
+     * @return void
+     */
+    public function testIfGettingTaskStatusWorksIfThereIsNoSuchTask()
+    {
+        $this->taskRepository->shouldReceive('find')->andReturn(null);
+        $service = new TaskQueueService(
+            $this->entityManager,
+            $this->pheanStalkProxy,
+            $this->serializer,
+            $this->params
+        );
+        $response = $service->getStatusOfTaskWithId(1);
+        $this->assertEquals(Task::STATUS_GONE, $response, 'Expected "gone" Response!');
+    }
+
+    /**
+     * Test if the proper status is returned in case a task is found
+     *
+     * @return void
+     */
+    public function testIfGettingTaskStatusWorksIfThereIsATask()
+    {
+        $exampleTask = new ExampleTaskDescription();
+        $stringVersion = get_class($exampleTask) .
+            "::" .
+            $this->serializer->serialize($exampleTask, 'json');
+        $taskEntity = new Task($exampleTask, $stringVersion, 'gtldtube');
+        $taskEntity->setStatus(Task::STATUS_DONE);
+
+        $this->taskRepository->shouldReceive('find')->andReturn($taskEntity);
+        $service = new TaskQueueService(
+            $this->entityManager,
+            $this->pheanStalkProxy,
+            $this->serializer,
+            $this->params
+        );
+        $response = $service->getStatusOfTaskWithId(1);
+        $this->assertEquals(Task::STATUS_DONE, $response, 'Expected "done" Response!');
+    }
+
+    /**
      * Test the queueing of tasks
      *
      * @return void
@@ -105,6 +148,7 @@ class TaskQueueServiceTest extends \PHPUnit_Framework_TestCase
         );
         $service->markDone($workPackage);
     }
+
     /**
      * tests the status update call in the service
      *
@@ -140,7 +184,6 @@ class TaskQueueServiceTest extends \PHPUnit_Framework_TestCase
     public function testRegenerate()
     {
         $id = 1;
-
 
 
         $exampleTask = new ExampleTaskDescription();
@@ -219,7 +262,6 @@ class TaskQueueServiceTest extends \PHPUnit_Framework_TestCase
             'Received class is not of class Task'
         );
     }
-
 
 
     /**
