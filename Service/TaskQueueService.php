@@ -76,11 +76,29 @@ class TaskQueueService
     {
         return $this->defaultTube;
     }
+
+    /**
+     * Returns the current status of a task
+     *
+     * @param integer $taskId
+     * @return string
+     */
+    public function getStatusOfTaskWithId($taskId)
+    {
+        $task = $this->taskRepo->find($taskId);
+        if(!($task instanceof Task))
+        {
+            //the task was not found
+            return Task::STATUS_GONE;
+        }
+        return $task->getStatus();
+    }
+
     /**
      * @param TaskDescriptionInterface $task
      * @param string $tube (optional) the tube to use
      * @throws TaskQueueServiceException
-     * @return void
+     * @return integer
      */
     public function queueTask(TaskDescriptionInterface $task, $tube = null)
     {
@@ -97,6 +115,8 @@ class TaskQueueService
         $this->beanstalk
             ->useTube($tube)
             ->put($stringVersion);
+
+        return $taskEntity->getId();
     }
 
     /**

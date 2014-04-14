@@ -14,12 +14,40 @@ use Webdevvie\PheanstalkTaskQueueBundle\TaskDescription\TaskDescriptionInterface
  */
 class Task
 {
+    /**
+     * The task is awaiting start
+     */
     const STATUS_NEW = 'new';
+
+    /**
+     * The task is in progress.. awaiting completion (or failure)
+     */
     const STATUS_WORKING = 'working';
+
+    /**
+     * Unused at this time
+     */
     const STATUS_STALLED = 'stalled';
+
+    /**
+     * The task failed executing ( the command returned an exitcode !=0)
+     */
     const STATUS_FAILED = 'failed';
+
+    /**
+     * The task was manually restarted
+     */
     const STATUS_RESTARTED = 'restarted';
+
+    /**
+     * The task was completed successfully
+     */
     const STATUS_DONE = 'done';
+
+    /**
+     * The Task entity was not found when searching for it.
+     */
+    const STATUS_GONE = 'gone';
 
     /**
      * @var integer
