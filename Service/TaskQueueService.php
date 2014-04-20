@@ -86,8 +86,7 @@ class TaskQueueService
     public function getStatusOfTaskWithId($taskId)
     {
         $task = $this->taskRepo->find($taskId);
-        if(!($task instanceof Task))
-        {
+        if (!($task instanceof Task)) {
             //the task was not found
             return Task::STATUS_GONE;
         }
@@ -169,7 +168,7 @@ class TaskQueueService
             t.created <= :older'
         );
         $query->setParameter('status', array(Task::STATUS_DONE));
-        $query->setParameter('older', date("Y-m-d H:i:s", time()-$timePeriod));
+        $query->setParameter('older', date("Y-m-d H:i:s", time() - $timePeriod));
         $query->execute();
     }
 
@@ -206,7 +205,9 @@ class TaskQueueService
             throw new TaskQueueServiceException("Invalid format in TaskQueue {$tube} ");
         } catch (\ReflectionException $exception) {
             $this->beanstalk->delete($inTask);
-            throw new TaskQueueServiceException("Invalid format in TaskQueue {$tube} class ".$parts[0].' is unknown');
+            throw new TaskQueueServiceException(
+                "Invalid format in TaskQueue {$tube} class " . $parts[0] . ' is unknown'
+            );
         }
         if (!($taskObject instanceof TaskDescriptionInterface)) {
             $this->beanstalk->delete($inTask);
@@ -254,6 +255,8 @@ class TaskQueueService
     }
 
     /**
+     * Updates the task status
+     *
      * @param WorkPackage $task
      * @param string $status
      * @return void

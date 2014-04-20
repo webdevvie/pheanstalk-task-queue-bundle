@@ -94,7 +94,7 @@ abstract class AbstractWorker extends ContainerAwareCommand
      */
     protected function addDefaultConfiguration()
     {
-        $this->addOption('use-tube', null, InputOption::VALUE_OPTIONAL, 'What tube to send to');
+        $this->addOption('use-tube', null, InputOption::VALUE_OPTIONAL, 'What tube to work with');
     }
 
     /**
