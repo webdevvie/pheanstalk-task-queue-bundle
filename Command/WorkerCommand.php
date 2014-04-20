@@ -87,8 +87,9 @@ class WorkerCommand extends AbstractWorker
         try {
             $command = $this->taskCommandGenerator->generate($taskObject);
         } catch (TaskCommandGeneratorException $exception) {
-            $this->verboseOutput("Invalid command supplied in " . get_class($taskObject));
-            $this->taskQueueService->markFailed($taskObject);
+            $logMessage = "Invalid command supplied in " . get_class($taskObject);
+            $this->verboseOutput($logMessage);
+            $this->taskQueueService->markFailed($taskObject, $logMessage);
             return;
         }
         $fullCommand = 'exec app/console ' . $command;
@@ -100,6 +101,7 @@ class WorkerCommand extends AbstractWorker
         $hasReceivedSignal = false;
         $exitCode = 0;
         $exitCodeText = '';
+        $childOutput = '';
         while ($runningCommand) {
             $this->handleRunningProcess(
                 $process,
@@ -111,15 +113,16 @@ class WorkerCommand extends AbstractWorker
                 $exitCodeText
             );
             $incOut = $process->getIncrementalOutput();
+            $childOutput .= $incOut;
             if (strlen($incOut) > 0) {
                 $this->output->write($incOut);
             }
         }
         if ($failed) {
             $this->verboseOutput("FAILED CHILD: " . $exitCode . "::" . $exitCodeText);
-            $this->taskQueueService->markFailed($taskObject);
+            $this->taskQueueService->markFailed($taskObject, $childOutput);
         } else {
-            $this->taskQueueService->markDone($taskObject);
+            $this->taskQueueService->markDone($taskObject, $childOutput);
         }
         if ($process->isRunning()) {
             $process->stop();

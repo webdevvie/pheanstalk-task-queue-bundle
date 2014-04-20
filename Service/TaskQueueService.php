@@ -38,6 +38,20 @@ class TaskQueueService
     private $defaultTube;
 
     /**
+     * Log the worker output on success
+     *
+     * @var boolean
+     */
+    private $logWorkerOutputOnSuccess;
+
+    /**
+     * Log the worker output on failure
+     *
+     * @var boolean
+     */
+    private $logWorkerOutputOnFailure;
+
+    /**
      * @var \Doctrine\ORM\EntityManager
      */
     private $entityManager;
@@ -65,6 +79,8 @@ class TaskQueueService
         $this->entityManager = $entityManager;
         $this->taskRepo = $this->entityManager->getRepository('WebdevviePheanstalkTaskQueueBundle:Task');
         $this->defaultTube = $params['default_tube'];
+        $this->logWorkerOutputOnSuccess = $params['log_worker_output_on_success'];
+        $this->logWorkerOutputOnFailure = $params['log_worker_output_on_failure'];
     }
 
     /**
@@ -86,8 +102,7 @@ class TaskQueueService
     public function getStatusOfTaskWithId($taskId)
     {
         $task = $this->taskRepo->find($taskId);
-        if(!($task instanceof Task))
-        {
+        if (!($task instanceof Task)) {
             //the task was not found
             return Task::STATUS_GONE;
         }
@@ -169,7 +184,7 @@ class TaskQueueService
             t.created <= :older'
         );
         $query->setParameter('status', array(Task::STATUS_DONE));
-        $query->setParameter('older', date("Y-m-d H:i:s", time()-$timePeriod));
+        $query->setParameter('older', date("Y-m-d H:i:s", time() - $timePeriod));
         $query->execute();
     }
 
@@ -206,7 +221,9 @@ class TaskQueueService
             throw new TaskQueueServiceException("Invalid format in TaskQueue {$tube} ");
         } catch (\ReflectionException $exception) {
             $this->beanstalk->delete($inTask);
-            throw new TaskQueueServiceException("Invalid format in TaskQueue {$tube} class ".$parts[0].' is unknown');
+            throw new TaskQueueServiceException(
+                "Invalid format in TaskQueue {$tube} class " . $parts[0] . ' is unknown'
+            );
         }
         if (!($taskObject instanceof TaskDescriptionInterface)) {
             $this->beanstalk->delete($inTask);
@@ -231,11 +248,15 @@ class TaskQueueService
      * Deletes a task from the queue
      *
      * @param WorkPackage $task
+     * @param string $log
      * @throws TaskQueueServiceException
      * @return void
      */
-    public function markDone(WorkPackage $task)
+    public function markDone(WorkPackage $task, $log)
     {
+        if ($this->logWorkerOutputOnSuccess) {
+            $this->updateTaskLog($task, $log);
+        }
         $this->updateTaskStatus($task, Task::STATUS_DONE);
         $this->beanstalk->delete($task->getPheanstalkJob());
     }
@@ -244,16 +265,42 @@ class TaskQueueService
      * Marks a job as failed and deletes it from the beanstalk tube
      *
      * @param WorkPackage $task
+     * @param string $log
      * @throws TaskQueueServiceException
      * @return void
      */
-    public function markFailed(WorkPackage $task)
+    public function markFailed(WorkPackage $task, $log)
     {
+        if ($this->logWorkerOutputOnFailure) {
+            $this->updateTaskLog($task, $log);
+        }
         $this->updateTaskStatus($task, Task::STATUS_FAILED);
         $this->beanstalk->delete($task->getPheanstalkJob());
     }
 
     /**
+     * Writes the log to the Task entity
+     *
+     * @param WorkPackage $task
+     * @param string $log
+     * @return void
+     * @throws TaskQueueServiceException
+     */
+    private function updateTaskLog(WorkPackage $task, $log)
+    {
+        $taskEntity = $task->getTaskEntity();
+        if ($taskEntity instanceof Task) {
+            $taskEntity->setLog($log);
+            //make sure it is stored...
+            $this->entityManager->flush($taskEntity);
+        } else {
+            throw new TaskQueueServiceException("Entity is not of type Task");
+        }
+    }
+
+    /**
+     * Updates the task status
+     *
      * @param WorkPackage $task
      * @param string $status
      * @return void
