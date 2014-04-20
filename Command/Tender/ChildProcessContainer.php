@@ -197,7 +197,7 @@ class ChildProcessContainer
      */
     public function getOutputLinesAvailable()
     {
-        $outputLines = [];
+        $outputLines = array();
         return $outputLines;
     }
 
@@ -301,9 +301,9 @@ class ChildProcessContainer
      */
     public function getReadyForBed()
     {
-        $busyStatusses = [ChildProcessContainer::STATUS_SLEEPY,
+        $busyStatusses = array(ChildProcessContainer::STATUS_SLEEPY,
             ChildProcessContainer::STATUS_BUSY_BUT_SLEEPY
-        ];
+        );
         if (in_array($this->status, $busyStatusses)) {
             //ready for bed
             return;

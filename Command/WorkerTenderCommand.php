@@ -18,7 +18,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * one time per "tube"* You can supply several parameters to this command. Please refer to those parameters
  * for more information about customising your worker-tender experience
  *
- * @author John Bakker <me@johnbakker.name
+ * @author John Bakker <me@johnbakker.name>
  */
 class WorkerTenderCommand extends AbstractWorker
 {
@@ -66,7 +66,7 @@ class WorkerTenderCommand extends AbstractWorker
                 'Max time to keep a worker in seconds',
                 6000000
             );
-        $this->addDefaultConfiguration();
+        $this->addOption('use-tube', null, InputOption::VALUE_REQUIRED, 'What tube to work with');
     }
 
     /**
@@ -235,8 +235,10 @@ class WorkerTenderCommand extends AbstractWorker
      */
     private function findDisposableWorkers()
     {
+        $disposableStatusses = array(ChildProcessContainer::STATUS_READY, ChildProcessContainer::STATUS_ALIVE);
         foreach ($this->family as &$child) {
-            if (in_array($child->status, array(ChildProcessContainer::STATUS_READY, ChildProcessContainer::STATUS_ALIVE))) {
+
+            if (in_array($child->status, $disposableStatusses)) {
                 if ($child->getAge() < 10) {
                     //less than ten seconds old keep it alive a bit to let its do its job
                     continue;

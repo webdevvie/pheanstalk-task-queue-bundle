@@ -75,6 +75,14 @@ class Task
     private $data;
 
     /**
+     * The output supplied by the command
+     * @var string
+     *
+     * @ORM\Column(name="log", type="text", nullable=true)
+     */
+    private $log;
+
+    /**
      * The tube this task was sent to
      * @var string
      *
@@ -172,6 +180,19 @@ class Task
     }
 
     /**
+     * Set log
+     *
+     * @param string $status
+     * @return task
+     */
+    public function setLog($log)
+    {
+        $this->log = $log;
+        $this->modified = new \DateTime();
+        return $this;
+    }
+
+    /**
      * Get status
      *
      * @return string 
@@ -181,7 +202,15 @@ class Task
         return $this->status;
     }
 
-
+    /**
+     * Get log
+     *
+     * @return string
+     */
+    public function getLog()
+    {
+        return $this->status;
+    }
 
     /**
      * Get created
