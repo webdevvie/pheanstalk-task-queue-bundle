@@ -11,7 +11,7 @@ use Webdevvie\PheanstalkTaskQueueBundle\Command\Example\TaskDescription\ExampleT
  * For testing the task command generator
  *
  * @package Webdevvie\PheanstalkTaskQueueBundle\Tests\Service
- * @author John Bakker <me@johnbakker.name
+ * @author John Bakker <me@johnbakker.name>
  */
 class TaskCommandGeneratorTest extends \PHPUnit_Framework_TestCase
 {

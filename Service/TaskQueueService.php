@@ -17,7 +17,7 @@ use Webdevvie\PheanstalkTaskQueueBundle\Entity\TaskRepository;
  * This service is where you send your TaskDescriptions to be offloaded to the back end.
  * This service also is the contact point for workers to get new tasks or send back the task's status
  *
- * @author John Bakker <me@johnbakker.name
+ * @author John Bakker <me@johnbakker.name>
  */
 class TaskQueueService
 {

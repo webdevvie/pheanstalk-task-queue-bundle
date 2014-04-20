@@ -16,7 +16,7 @@ use Webdevvie\PheanstalkTaskQueueBundle\Command\AbstractWorker;
  * A child process container that handles starting of the a worker, sending signal and reading
  * status data back from the worker child process.
  *
- * @author John Bakker <me@johnbakker.name
+ * @author John Bakker <me@johnbakker.name>
  */
 class ChildProcessContainer
 {

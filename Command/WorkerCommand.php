@@ -23,7 +23,7 @@ use Webdevvie\PheanstalkTaskQueueBundle\Service\TaskCommandGenerator;
  * This command outputs child output and outputs responses the ChildProcessContainer class
  * can understand
  *
- * @author John Bakker <me@johnbakker.name
+ * @author John Bakker <me@johnbakker.name>
  */
 class WorkerCommand extends AbstractWorker
 {

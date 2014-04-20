@@ -15,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Class RegenerateFailedTaskCommand
  * command for regenerating failed task from the table
  *
- * @author John Bakker <me@johnbakker.name
+ * @author John Bakker <me@johnbakker.name>
  */
 class RegenerateFailedTaskCommand extends AbstractWorker
 {

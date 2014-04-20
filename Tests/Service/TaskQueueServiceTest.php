@@ -15,7 +15,7 @@ use Mockery;
 /**
  * For testing the task queue service
  * @package Webdevvie\PheanstalkTaskQueueBundle\Tests\Service
- * @author John Bakker <me@johnbakker.name
+ * @author John Bakker <me@johnbakker.name>
  */
 class TaskQueueServiceTest extends \PHPUnit_Framework_TestCase
 {

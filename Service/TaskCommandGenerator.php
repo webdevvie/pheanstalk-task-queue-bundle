@@ -10,7 +10,7 @@ use Webdevvie\PheanstalkTaskQueueBundle\Service\DTO\WorkPackage;
  * Generates the command string from a WorkPackage's TaskDescription property
  * that workers use to start the work they need to do.
  *
- * @author John Bakker <me@johnbakker.name
+ * @author John Bakker <me@johnbakker.name>
  */
 class TaskCommandGenerator
 {

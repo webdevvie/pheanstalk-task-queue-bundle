@@ -14,7 +14,7 @@ use JMS\Serializer\Annotation\ExclusionPolicy;
  * Please check out the ExampleWorkerCommand.php in the command directory
  *
  * @package Webdevvie\PheanstalkTaskQueueBundle\TaskDescription
- * @author John Bakker <me@johnbakker.name
+ * @author John Bakker <me@johnbakker.name>
  * @ExclusionPolicy("all")
  */
 class ExampleTaskDescription extends AbstractTaskDescription

@@ -12,7 +12,7 @@ use \Pheanstalk_Job;
  * object is passed around between the TaskQueueService and the WorkerCommand.
  *
  * @package Webdevvie\PheanstalkTaskQueueBundle\Service\DTO
- * @author John Bakker <me@johnbakker.name
+ * @author John Bakker <me@johnbakker.name>
  */
 class WorkPackage
 {
