@@ -138,7 +138,7 @@ class TaskQueueServiceTest extends \PHPUnit_Framework_TestCase
         $workPackage = new WorkPackage($taskEntity, $job, $exampleTask);
 
         $this->entityManager->shouldReceive('persist')->withArgs([$taskEntity]);
-        $this->entityManager->shouldReceive('flush');
+        $this->entityManager->shouldReceive('flush')->twice();
         $this->pheanStalkProxy->shouldReceive('delete');
         $service = new TaskQueueService(
             $this->entityManager,
@@ -146,7 +146,7 @@ class TaskQueueServiceTest extends \PHPUnit_Framework_TestCase
             $this->serializer,
             $this->params
         );
-        $service->markDone($workPackage);
+        $service->markDone($workPackage, 'log goes here');
     }
 
     /**
@@ -165,7 +165,7 @@ class TaskQueueServiceTest extends \PHPUnit_Framework_TestCase
         $workPackage = new WorkPackage($taskEntity, $job, $exampleTask);
 
         $this->entityManager->shouldReceive('persist')->withArgs([$taskEntity]);
-        $this->entityManager->shouldReceive('flush');
+        $this->entityManager->shouldReceive('flush')->twice();
         $this->pheanStalkProxy->shouldReceive('delete');
         $service = new TaskQueueService(
             $this->entityManager,
@@ -173,7 +173,7 @@ class TaskQueueServiceTest extends \PHPUnit_Framework_TestCase
             $this->serializer,
             $this->params
         );
-        $service->markDone($workPackage);
+        $service->markDone($workPackage, 'log goes here');
     }
 
     /**
@@ -348,6 +348,10 @@ class TaskQueueServiceTest extends \PHPUnit_Framework_TestCase
      */
     public function generateFakeParams()
     {
-        $this->params = ["default_tube" => "gtldtube"];
+        $this->params = array(
+            "default_tube" => "gtldtube",
+            "log_worker_output_on_success" => true,
+            "log_worker_output_on_failure" => true
+        );
     }
 }

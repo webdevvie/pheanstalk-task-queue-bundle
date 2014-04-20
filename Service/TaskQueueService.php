@@ -38,6 +38,20 @@ class TaskQueueService
     private $defaultTube;
 
     /**
+     * Log the worker output on success
+     *
+     * @var boolean
+     */
+    private $logWorkerOutputOnSuccess;
+
+    /**
+     * Log the worker output on failure
+     *
+     * @var boolean
+     */
+    private $logWorkerOutputOnFailure;
+
+    /**
      * @var \Doctrine\ORM\EntityManager
      */
     private $entityManager;
@@ -65,6 +79,8 @@ class TaskQueueService
         $this->entityManager = $entityManager;
         $this->taskRepo = $this->entityManager->getRepository('WebdevviePheanstalkTaskQueueBundle:Task');
         $this->defaultTube = $params['default_tube'];
+        $this->logWorkerOutputOnSuccess = $params['log_worker_output_on_success'];
+        $this->logWorkerOutputOnFailure = $params['log_worker_output_on_failure'];
     }
 
     /**
@@ -232,11 +248,15 @@ class TaskQueueService
      * Deletes a task from the queue
      *
      * @param WorkPackage $task
+     * @param string $log
      * @throws TaskQueueServiceException
      * @return void
      */
-    public function markDone(WorkPackage $task)
+    public function markDone(WorkPackage $task, $log)
     {
+        if ($this->logWorkerOutputOnSuccess) {
+            $this->updateTaskLog($task, $log);
+        }
         $this->updateTaskStatus($task, Task::STATUS_DONE);
         $this->beanstalk->delete($task->getPheanstalkJob());
     }
@@ -245,13 +265,37 @@ class TaskQueueService
      * Marks a job as failed and deletes it from the beanstalk tube
      *
      * @param WorkPackage $task
+     * @param string $log
      * @throws TaskQueueServiceException
      * @return void
      */
-    public function markFailed(WorkPackage $task)
+    public function markFailed(WorkPackage $task, $log)
     {
+        if ($this->logWorkerOutputOnFailure) {
+            $this->updateTaskLog($task, $log);
+        }
         $this->updateTaskStatus($task, Task::STATUS_FAILED);
         $this->beanstalk->delete($task->getPheanstalkJob());
+    }
+
+    /**
+     * Writes the log to the Task entity
+     *
+     * @param WorkPackage $task
+     * @param string $log
+     * @return void
+     * @throws TaskQueueServiceException
+     */
+    private function updateTaskLog(WorkPackage $task, $log)
+    {
+        $taskEntity = $task->getTaskEntity();
+        if ($taskEntity instanceof Task) {
+            $taskEntity->setLog($log);
+            //make sure it is stored...
+            $this->entityManager->flush($taskEntity);
+        } else {
+            throw new TaskQueueServiceException("Entity is not of type Task");
+        }
     }
 
     /**

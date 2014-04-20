@@ -24,6 +24,8 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
             ->scalarNode('default_tube')->isRequired()->end()
+            ->booleanNode('log_worker_output_on_failure')->defaultTrue()->end()
+            ->booleanNode('log_worker_output_on_success')->defaultFalse()->end()
             ->end();
         return $treeBuilder;
     }
