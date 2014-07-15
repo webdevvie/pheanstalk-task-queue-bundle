@@ -5,9 +5,19 @@ services:
         class: Webdevvie\PheanstalkTaskQueueBundle\Service\TaskQueueService
         arguments:
             - @doctrine.orm.entity_manager
-            - @leezy.pheanstalk
+            - @webdevvie_pheanstalkconnection
             - @jms_serializer
             - %webdevvie_taskqueue.params%
+
+    webdevvie_pheanstalkconnection:
+        class: Webdevvie\PheanstalkTaskQueueBundle\Service\PheanstalkConnection
+        arguments:
+            - @webdevvie_pheanstalkfactory
+            - %webdevvie_taskqueue.primary_server%
+            - %webdevvie_taskqueue.default_tube%
+
+    webdevvie_pheanstalkfactory:
+        class: Webdevvie\PheanstalkTaskQueueBundle\Service\PheanstalkFactory
 
     webdevvie_pheanstalktaskqueue.task_command_generator:
         class: Webdevvie\PheanstalkTaskQueueBundle\Service\TaskCommandGenerator

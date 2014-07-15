@@ -12,7 +12,7 @@ use Webdevvie\PheanstalkTaskQueueBundle\Entity\Task;
  * Class TaskCleanupCommand
  * Cleans up tasks that are done
  *
- * @author John Bakker <me@johnbakker.name
+ * @author John Bakker <me@johnbakker.name>
  */
 class TaskCleanupCommand extends AbstractWorker
 {

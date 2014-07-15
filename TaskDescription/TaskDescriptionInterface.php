@@ -10,7 +10,7 @@ use Webdevvie\PheanstalkTaskQueueBundle\Entity\Task;
  * Task descriptions are used to describe some of the work to be done on the backend.
  *
  * @package Webdevvie\PheanstalkTaskQueueBundle\TaskDescription
- * @author John Bakker <me@johnbakker.name
+ * @author John Bakker <me@johnbakker.name>
  */
 interface TaskDescriptionInterface
 {

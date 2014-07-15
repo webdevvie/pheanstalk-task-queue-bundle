@@ -15,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Adds example work to the queue
  *
  * @package Webdevvie\TldBundle\Command
- * @author John Bakker <me@johnbakker.name
+ * @author John Bakker <me@johnbakker.name>
  */
 class AddExampleTaskCommand extends AbstractWorker
 {

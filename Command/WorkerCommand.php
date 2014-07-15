@@ -23,7 +23,7 @@ use Webdevvie\PheanstalkTaskQueueBundle\Service\TaskCommandGenerator;
  * This command outputs child output and outputs responses the ChildProcessContainer class
  * can understand
  *
- * @author John Bakker <me@johnbakker.name
+ * @author John Bakker <me@johnbakker.name>
  */
 class WorkerCommand extends AbstractWorker
 {
@@ -105,7 +105,6 @@ class WorkerCommand extends AbstractWorker
         while ($runningCommand) {
             $this->handleRunningProcess(
                 $process,
-                $taskObject,
                 $runningCommand,
                 $failed,
                 $hasReceivedSignal,
@@ -134,7 +133,6 @@ class WorkerCommand extends AbstractWorker
      * Handles any running process waiting for signals..
      *
      * @param Process $process
-     * @param WorkPackage $taskObject
      * @param boolean &$runningCommand
      * @param boolean &$failed
      * @param boolean &$hasReceivedSignal
@@ -144,7 +142,6 @@ class WorkerCommand extends AbstractWorker
      */
     private function handleRunningProcess(
         Process $process,
-        WorkPackage $taskObject,
         &$runningCommand,
         &$failed,
         &$hasReceivedSignal,

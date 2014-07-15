@@ -3,7 +3,6 @@
 namespace Webdevvie\PheanstalkTaskQueueBundle\Service;
 
 use JMS\Serializer\Exception\UnsupportedFormatException;
-use Leezy\PheanstalkBundle\Proxy\PheanstalkProxy;
 use JMS\Serializer\Serializer;
 use Webdevvie\PheanstalkTaskQueueBundle\Service\DTO\WorkPackage;
 use Webdevvie\PheanstalkTaskQueueBundle\TaskDescription\TaskDescriptionInterface;
@@ -11,18 +10,19 @@ use Webdevvie\PheanstalkTaskQueueBundle\Service\Exception\TaskQueueServiceExcept
 use Doctrine\ORM\EntityManager;
 use Webdevvie\PheanstalkTaskQueueBundle\Entity\Task;
 use Webdevvie\PheanstalkTaskQueueBundle\Entity\TaskRepository;
+use Webdevvie\PheanstalkTaskQueueBundle\Service\PheanstalkConnection;
 
 /**
  * Handles all communication with Beanstalkd queue and the task entity
  * This service is where you send your TaskDescriptions to be offloaded to the back end.
  * This service also is the contact point for workers to get new tasks or send back the task's status
  *
- * @author John Bakker <me@johnbakker.name
+ * @author John Bakker <me@johnbakker.name>
  */
 class TaskQueueService
 {
     /**
-     * @var \Leezy\PheanstalkBundle\Proxy\PheanstalkProxy
+     * @var PheanstalkConnection
      */
     private $beanstalk;
 
@@ -61,16 +61,15 @@ class TaskQueueService
      */
     private $taskRepo;
 
-
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param \Leezy\PheanstalkBundle\Proxy\PheanstalkProxy $beanstalk
-     * @param \JMS\Serializer\Serializer $serializer
+     * @param EntityManager $entityManager
+     * @param PheanstalkConnection $beanstalk
+     * @param Serializer $serializer
      * @param array $params
      */
     public function __construct(
         \Doctrine\ORM\EntityManager $entityManager,
-        \Leezy\PheanstalkBundle\Proxy\PheanstalkProxy $beanstalk,
+        PheanstalkConnection $beanstalk,
         \JMS\Serializer\Serializer $serializer,
         array $params
     ) {

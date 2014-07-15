@@ -13,7 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Example worker command
  *
  * @package Webdevvie\TldBundle\Command
- * @author John Bakker <me@johnbakker.name
+ * @author John Bakker <me@johnbakker.name>
  */
 class ExampleWorkerCommand extends ContainerAwareCommand
 {
