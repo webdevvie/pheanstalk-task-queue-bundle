@@ -53,7 +53,7 @@ class TaskQueueServiceTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->serializer = SerializerBuilder::create()->build();
-        $this->setupPheanstalkProxyMock();
+        $this->setupPheanstalkConnectionMock();
         $this->generateFakeParams();
         $this->setupEntityManagerMock();
     }
@@ -137,7 +137,7 @@ class TaskQueueServiceTest extends \PHPUnit_Framework_TestCase
         $job = new \Pheanstalk_Job(1, 123);
         $workPackage = new WorkPackage($taskEntity, $job, $exampleTask);
 
-        $this->entityManager->shouldReceive('persist')->withArgs([$taskEntity]);
+        $this->entityManager->shouldReceive('persist')->with($taskEntity);
         $this->entityManager->shouldReceive('flush')->twice();
         $this->pheanStalkProxy->shouldReceive('delete');
         $service = new TaskQueueService(
@@ -164,7 +164,7 @@ class TaskQueueServiceTest extends \PHPUnit_Framework_TestCase
 
         $workPackage = new WorkPackage($taskEntity, $job, $exampleTask);
 
-        $this->entityManager->shouldReceive('persist')->withArgs([$taskEntity]);
+        $this->entityManager->shouldReceive('persist')->with($taskEntity);
         $this->entityManager->shouldReceive('flush')->twice();
         $this->pheanStalkProxy->shouldReceive('delete');
         $service = new TaskQueueService(
@@ -194,7 +194,7 @@ class TaskQueueServiceTest extends \PHPUnit_Framework_TestCase
         $taskEntity->setStatus(Task::STATUS_FAILED);
 
 
-        $this->taskRepository->shouldReceive('find')->withArgs([$id])->andReturn($taskEntity);
+        $this->taskRepository->shouldReceive('find')->with($id)->andReturn($taskEntity);
         $this->entityManager->shouldReceive('flush');
         $this->pheanStalkProxy->shouldReceive('useTube')->andReturn($this->pheanStalkProxy);
         $this->pheanStalkProxy->shouldReceive('put');
@@ -277,7 +277,7 @@ class TaskQueueServiceTest extends \PHPUnit_Framework_TestCase
         $exampleTask->taskIdentifier = $taskId;
         $stringVersion = get_class($exampleTask) . "::" . $this->serializer->serialize($exampleTask, 'json');
         $taskEntity = new Task($exampleTask, $stringVersion, 'gtldtube');
-        $this->taskRepository->shouldReceive('find')->withArgs([1])->andReturn($taskEntity);
+        $this->taskRepository->shouldReceive('find')->with(1)->andReturn($taskEntity);
         $job = \Mockery::mock("\Pheanstalk_Job");
         $job->shouldIgnoreMissing();
         $job->shouldReceive('getData')
@@ -288,7 +288,7 @@ class TaskQueueServiceTest extends \PHPUnit_Framework_TestCase
             ->andReturn($this->pheanStalkProxy);
         $this->pheanStalkProxy->shouldReceive('reserve')
             ->andReturn($job);
-        $this->entityManager->shouldReceive('persist')->withArgs([$taskEntity]);
+        $this->entityManager->shouldReceive('persist')->with($taskEntity);
         $this->entityManager->shouldReceive('flush');
 
     }
@@ -336,9 +336,9 @@ class TaskQueueServiceTest extends \PHPUnit_Framework_TestCase
      *
      * @return void
      */
-    public function setupPheanstalkProxyMock()
+    public function setupPheanstalkConnectionMock()
     {
-        $this->pheanStalkProxy = \Mockery::mock('\Leezy\PheanstalkBundle\Proxy\PheanstalkProxy');
+        $this->pheanStalkProxy = \Mockery::mock('\Webdevvie\PheanstalkTaskQueueBundle\Service\PheanstalkConnection');
     }
 
     /**

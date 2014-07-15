@@ -25,5 +25,8 @@ class WebdevviePheanstalkTaskQueueExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
         $container->setParameter('webdevvie_taskqueue.params', $config);
+        $container->setParameter('webdevvie_taskqueue.primary_server', $config['server']);
+        $container->setParameter('webdevvie_taskqueue.default_tube', $config['default_tube']);
+
     }
 }

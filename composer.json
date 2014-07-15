@@ -14,8 +14,9 @@
     "minimum-stability": "dev",
     "require": {
         "php": ">=5.3.0",
-		"leezy/pheanstalk-bundle": "2.*",
-		"jms/serializer-bundle": "0.13.*"
+        "pda/pheanstalk": ">=2.1.0,<3.0-dev",
+		"jms/serializer-bundle": "0.13.*",
+        "symfony/process":"~2.4"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*",
@@ -30,7 +31,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.2-dev"
+            "dev-master": "0.3-dev"
         }
     },
     "target-dir": "Webdevvie/PheanstalkTaskQueueBundle"

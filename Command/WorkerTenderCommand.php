@@ -143,7 +143,7 @@ class WorkerTenderCommand extends AbstractWorker
      */
     private function familyPlanning()
     {
-        list($total, $busy, $available) = $this->countWorkers();
+        list($total, $available) = $this->countWorkers();
         if ($this->shutdownGracefully) {
             if ($total > 0) {
                 $this->verboseOutput("<info>Shutting down</info> $total remaining children");
@@ -157,7 +157,7 @@ class WorkerTenderCommand extends AbstractWorker
             }
             return;
         }
-        list($shouldHaveLessWorkers, $shouldHaveMoreWorkers) = $this->moreOrLess($total, $busy, $available);
+        list($shouldHaveLessWorkers, $shouldHaveMoreWorkers) = $this->moreOrLess($total, $available);
         if ($shouldHaveMoreWorkers) {
             $this->family[] = $this->spawnChild();
         }
@@ -203,7 +203,7 @@ class WorkerTenderCommand extends AbstractWorker
      * @param integer $available
      * @return array
      */
-    public function moreOrLess($total, $busy, $available)
+    public function moreOrLess($total, $available)
     {
         $shouldHaveMoreWorkers = false;
         $shouldHaveLessWorkers = false;
