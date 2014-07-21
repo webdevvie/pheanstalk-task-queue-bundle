@@ -192,7 +192,7 @@ class WorkerTenderCommand extends AbstractWorker
                     break;
             }
         }
-        return array($total, $busy, $available);
+        return array($total, $available);
     }
 
     /**
