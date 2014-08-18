@@ -7,7 +7,7 @@ build_settings:
 setup:
   composer:
     action: "install"
-    prefer_dist: false
+    prefer_dist: true
 
 test:
   php_mess_detector:
