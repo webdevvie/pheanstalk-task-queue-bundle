@@ -15,7 +15,7 @@
     "require": {
         "php": ">=5.3.0",
         "pda/pheanstalk": ">=2.1.0,<3.0-dev",
-	"jms/serializer-bundle": "dev-master",
+	"jms/serializer-bundle": "0.13.*",
         "symfony/process":"~2.4",
         "phploc/phploc": "*"
     },
@@ -33,7 +33,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.3.6-dev"
+            "dev-master": "0.3.7-dev"
         }
     },
     "target-dir": "Webdevvie/PheanstalkTaskQueueBundle"
