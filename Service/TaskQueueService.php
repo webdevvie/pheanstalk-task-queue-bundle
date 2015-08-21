@@ -62,6 +62,11 @@ class TaskQueueService
     private $taskRepo;
 
     /**
+     * @var boolean
+     */
+    private $databaseDisabled = false;
+
+    /**
      * @param EntityManager $entityManager
      * @param PheanstalkConnection $beanstalk
      * @param Serializer $serializer
@@ -80,6 +85,16 @@ class TaskQueueService
         $this->defaultTube = $params['default_tube'];
         $this->logWorkerOutputOnSuccess = $params['log_worker_output_on_success'];
         $this->logWorkerOutputOnFailure = $params['log_worker_output_on_failure'];
+    }
+
+    /**
+     * Disables the use of the task entity
+     *
+     * @return void
+     */
+    public function disableDatabase()
+    {
+        $this->databaseDisabled = true;
     }
 
     /**
@@ -121,11 +136,13 @@ class TaskQueueService
         }
         $stringVersion = get_class($task) . '::' . $this->serializer->serialize($task, 'json');
         $taskEntity = new Task($task, $stringVersion, $tube);
-        $this->entityManager->persist($taskEntity);
-        $this->entityManager->flush($taskEntity);
-        $task->setTaskIdentifier($taskEntity->getId());
-        //regenerate it now we have an identifier
-        $stringVersion = get_class($task) . '::' . $this->serializer->serialize($task, 'json');
+        if (!$this->databaseDisabled) {
+            $this->entityManager->persist($taskEntity);
+            $this->entityManager->flush($taskEntity);
+            $task->setTaskIdentifier($taskEntity->getId());
+            //regenerate it now we have an identifier
+            $stringVersion = get_class($task) . '::' . $this->serializer->serialize($task, 'json');
+        }
         $this->beanstalk
             ->useTube($tube)
             ->put($stringVersion);
@@ -228,7 +245,13 @@ class TaskQueueService
             $this->beanstalk->delete($inTask);
             throw new TaskQueueServiceException("Invalid data in TaskQueue {$tube}");
         }
-        $taskEntity = $this->taskRepo->find($taskObject->getTaskIdentifier());
+        if (!$this->databaseDisabled) {
+            $taskEntity = $this->taskRepo->find($taskObject->getTaskIdentifier());
+        } else {
+            //remake the task entity
+            $taskEntity = new Task($taskObject, '', $tube);
+        }
+
         if (!($taskEntity instanceof Task)) {
             $this->beanstalk->delete($inTask);
             throw new TaskQueueServiceException(
@@ -287,6 +310,9 @@ class TaskQueueService
      */
     private function updateTaskLog(WorkPackage $task, $log)
     {
+        if ($this->databaseDisabled) {
+            return;
+        }
         $taskEntity = $task->getTaskEntity();
         if ($taskEntity instanceof Task) {
             $taskEntity->setLog($log);
@@ -307,6 +333,9 @@ class TaskQueueService
      */
     private function updateTaskStatus(WorkPackage $task, $status)
     {
+        if ($this->databaseDisabled) {
+            return;
+        }
         $taskEntity = $task->getTaskEntity();
         if ($taskEntity instanceof Task) {
             $taskEntity->setStatus($status);
