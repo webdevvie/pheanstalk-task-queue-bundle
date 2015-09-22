@@ -253,7 +253,7 @@ class ChildProcessContainer
             $cmd .= ' --use-tube=' . escapeshellarg($this->tube);
         }
         if ($this->parent->isVerbose()) {
-            $cmd .= ' --verbose';
+            $cmd .= ' -vvvv';
         }
         $this->startTime = time();
         $this->parent->verboseOutput('<info>Starting:</info>' . $cmd);
