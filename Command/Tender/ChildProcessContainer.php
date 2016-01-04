@@ -147,6 +147,7 @@ class ChildProcessContainer
                 $this->status = self::STATUS_DEAD;
                 return true;
             }
+            $this->status = self::STATUS_DEAD;
             return false;
         } else {
             return true;
@@ -308,7 +309,11 @@ class ChildProcessContainer
             //ready for bed
             return;
         }
-        if ($this->status == ChildProcessContainer::STATUS_BUSY) {
+        if($this->status  == ChildProcessContainer::STATUS_DEAD)
+        {
+            // do nothing
+        }
+        else if ($this->status == ChildProcessContainer::STATUS_BUSY) {
             $this->status = ChildProcessContainer::STATUS_BUSY_BUT_SLEEPY;
         } else {
             $this->status = ChildProcessContainer::STATUS_SLEEPY;
