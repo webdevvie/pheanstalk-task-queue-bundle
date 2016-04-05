@@ -67,6 +67,11 @@ class TaskQueueService
     private $databaseDisabled = false;
 
     /**
+     * @var integer
+     */
+    private $reserveTimeout = 2;
+
+    /**
      * @param EntityManager $entityManager
      * @param PheanstalkConnection $beanstalk
      * @param Serializer $serializer
@@ -220,7 +225,7 @@ class TaskQueueService
         $inTask = $this->beanstalk
             ->watch($tube)
             ->ignore('default')
-            ->reserve(2);
+            ->reserve($this->reserveTimeout);
         if ($inTask === false) {
             return null;
         }
@@ -266,6 +271,13 @@ class TaskQueueService
         return $workPackage;
     }
 
+    /**
+     * @param WorkPackage $task
+     */
+    public function release(WorkPackage $task)
+    {
+        $this->beanstalk->release($task->getPheanstalkJob());
+    }
     /**
      * Deletes a task from the queue
      *
@@ -344,5 +356,13 @@ class TaskQueueService
         } else {
             throw new TaskQueueServiceException("Entity is not of type Task");
         }
+    }
+
+    /**
+     * @param int $reserveTimeout
+     */
+    public function setReserveTimeout($reserveTimeout)
+    {
+        $this->reserveTimeout = $reserveTimeout;
     }
 }

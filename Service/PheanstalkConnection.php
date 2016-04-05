@@ -57,6 +57,15 @@ class PheanstalkConnection
     }
 
     /**
+     * Releases a job
+     * @param \Pheanstalk_Job $job
+     */
+    public function release($job)
+    {
+        $this->pheanstalk->release($job);
+    }
+
+    /**
      * Watches a tube
      *
      * @param string $tube
