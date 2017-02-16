@@ -129,7 +129,7 @@ class Task
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -139,7 +139,7 @@ class Task
     /**
      * Get type
      *
-     * @return string 
+     * @return string
      */
     public function getType()
     {
@@ -159,7 +159,7 @@ class Task
     /**
      * Get data
      *
-     * @return string 
+     * @return string
      */
     public function getData()
     {
@@ -195,7 +195,7 @@ class Task
     /**
      * Get status
      *
-     * @return string 
+     * @return string
      */
     public function getStatus()
     {
@@ -215,7 +215,7 @@ class Task
     /**
      * Get created
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreated()
     {
@@ -227,7 +227,7 @@ class Task
     /**
      * Get modified
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getModified()
     {

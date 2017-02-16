@@ -55,7 +55,6 @@ class StopWorkerTenderCommand extends AbstractWorker
             $processes = $this->findWorkerTenderProcessesForTube($this->tube);
             $output->write(".");
             sleep(1);
-
         }
         $output->writeln("Done!");
     }
@@ -88,6 +87,5 @@ class StopWorkerTenderCommand extends AbstractWorker
         }
 
         return $processes;
-
     }
 }

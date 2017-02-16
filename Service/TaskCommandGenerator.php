@@ -81,7 +81,6 @@ class TaskCommandGenerator
             }
         }
         return $cmdPart;
-
     }
 
     /**

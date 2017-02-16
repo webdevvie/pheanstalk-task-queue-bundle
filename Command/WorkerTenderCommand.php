@@ -2,7 +2,6 @@
 
 namespace Webdevvie\PheanstalkTaskQueueBundle\Command;
 
-
 use JMS\Serializer\SerializerBuilder;
 use Webdevvie\PheanstalkTaskQueueBundle\Command\AbstractWorker;
 use Webdevvie\PheanstalkTaskQueueBundle\Command\Tender\ChildProcessContainer;
@@ -152,7 +151,6 @@ class WorkerTenderCommand extends AbstractWorker
                     $this->verboseOutput("<info>Child: $cnr </info>" . $child->status);
                 }
                 $this->tellChildrenToPrepareForBed();
-
             } else {
                 $this->keepWorking = false;
             }
@@ -238,7 +236,6 @@ class WorkerTenderCommand extends AbstractWorker
     {
         $disposableStatusses = array(ChildProcessContainer::STATUS_READY, ChildProcessContainer::STATUS_ALIVE);
         foreach ($this->family as &$child) {
-
             if (in_array($child->status, $disposableStatusses)) {
                 if ($child->getAge() < 10) {
                     //less than ten seconds old keep it alive a bit to let its do its job

@@ -2,7 +2,6 @@
 
 namespace Webdevvie\PheanstalkTaskQueueBundle\Command\Example;
 
-
 use Webdevvie\PheanstalkTaskQueueBundle\Command\AbstractWorker;
 use Webdevvie\PheanstalkTaskQueueBundle\Command\Example\TaskDescription\ExampleTaskDescription;
 use Symfony\Component\Console\Input\InputArgument;

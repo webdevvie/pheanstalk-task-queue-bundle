@@ -2,8 +2,6 @@
 
 namespace Webdevvie\PheanstalkTaskQueueBundle\Command;
 
-
-
 use Webdevvie\PheanstalkTaskQueueBundle\Service\Exception\TaskQueueServiceException;
 use Webdevvie\PheanstalkTaskQueueBundle\Command\AbstractWorker;
 use Symfony\Component\Console\Input\InputArgument;

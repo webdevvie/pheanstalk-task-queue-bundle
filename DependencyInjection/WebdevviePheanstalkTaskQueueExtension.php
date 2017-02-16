@@ -27,6 +27,5 @@ class WebdevviePheanstalkTaskQueueExtension extends Extension
         $container->setParameter('webdevvie_taskqueue.params', $config);
         $container->setParameter('webdevvie_taskqueue.primary_server', $config['server']);
         $container->setParameter('webdevvie_taskqueue.default_tube', $config['default_tube']);
-
     }
 }

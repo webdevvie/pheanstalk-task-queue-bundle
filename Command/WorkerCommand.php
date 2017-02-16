@@ -2,7 +2,6 @@
 
 namespace Webdevvie\PheanstalkTaskQueueBundle\Command;
 
-
 use JMS\Serializer\SerializerBuilder;
 use Webdevvie\PheanstalkTaskQueueBundle\Command\AbstractWorker;
 use Webdevvie\PheanstalkTaskQueueBundle\Service\DTO\WorkPackage;
