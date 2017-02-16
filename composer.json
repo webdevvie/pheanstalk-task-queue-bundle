@@ -1,6 +1,6 @@
 {
     "name": "webdevvie/pheanstalk-task-queue-bundle",
-    "description": "A task queue / worker bundle for use with symfony2 and pda/pheanstalk",
+    "description": "A task queue / worker bundle for use with symfony3 and pda/pheanstalk",
     "keywords": ["symfony", "beanstalkd", "bundle", "pheanstalk", "worker"],
     "license": "Apache-2.0",
     "authors": [
@@ -29,11 +29,6 @@
     },
     "autoload": {
         "psr-0": { "Webdevvie\\PheanstalkTaskQueueBundle": "" }
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "0.4.0-dev"
-        }
     },
     "target-dir": "Webdevvie/PheanstalkTaskQueueBundle"
 }
