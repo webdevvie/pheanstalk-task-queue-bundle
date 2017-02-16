@@ -134,7 +134,7 @@ class TaskQueueServiceTest extends \PHPUnit_Framework_TestCase
         $stringVersion = get_class($exampleTask) . "::" . $this->serializer->serialize($exampleTask, 'json');
         $taskEntity = new Task($exampleTask, $stringVersion, 'gtldtube');
 
-        $job = new \Pheanstalk_Job(1, 123);
+        $job = new Pheanstalk\Job(1, 123);
         $workPackage = new WorkPackage($taskEntity, $job, $exampleTask);
 
         $this->entityManager->shouldReceive('persist')->with($taskEntity);
@@ -160,7 +160,7 @@ class TaskQueueServiceTest extends \PHPUnit_Framework_TestCase
         $stringVersion = get_class($exampleTask) . "::" . $this->serializer->serialize($exampleTask, 'json');
         $taskEntity = new Task($exampleTask, $stringVersion, 'gtldtube');
 
-        $job = new \Pheanstalk_Job(1, 123);
+        $job = new Pheanstalk\Job(1, 123);
 
         $workPackage = new WorkPackage($taskEntity, $job, $exampleTask);
 
@@ -278,7 +278,7 @@ class TaskQueueServiceTest extends \PHPUnit_Framework_TestCase
         $stringVersion = get_class($exampleTask) . "::" . $this->serializer->serialize($exampleTask, 'json');
         $taskEntity = new Task($exampleTask, $stringVersion, 'gtldtube');
         $this->taskRepository->shouldReceive('find')->with(1)->andReturn($taskEntity);
-        $job = \Mockery::mock("\Pheanstalk_Job");
+        $job = \Mockery::mock('Pheanstalk\Job');
         $job->shouldIgnoreMissing();
         $job->shouldReceive('getData')
             ->andReturn($stringVersion);

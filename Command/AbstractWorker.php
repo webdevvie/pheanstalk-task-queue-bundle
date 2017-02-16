@@ -16,7 +16,7 @@ use Psr\Log\LoggerInterface;
  * It simplifies the implementation of your own tasks and handling of signals for looping processes.
  *
  * @package Webdevvie\PheanstalkTaskQueueBundle\Command
- * @author John Bakker <me@johnbakker.name>
+ * @author  John Bakker <me@johnbakker.name>
  */
 abstract class AbstractWorker extends ContainerAwareCommand
 {
@@ -62,6 +62,12 @@ abstract class AbstractWorker extends ContainerAwareCommand
      * @var string
      */
     protected $consolePath;
+    /**
+     * the name of the console script
+     *
+     * @var string
+     */
+    protected $consoleScript;
 
     /**
      * The tube to use
@@ -98,7 +104,7 @@ abstract class AbstractWorker extends ContainerAwareCommand
     }
 
     /**
-     * @param \Symfony\Component\Console\Input\InputInterface $input
+     * @param \Symfony\Component\Console\Input\InputInterface   $input
      * @param \Symfony\Component\Console\Output\OutputInterface $output
      * @return void
      * @throws \InvalidArgumentException
@@ -112,16 +118,30 @@ abstract class AbstractWorker extends ContainerAwareCommand
         $this->verbose = $input->getOption('verbose');
         $this->container = $this->getContainer();
         $this->logger = $this->container->get('logger');
-        $this->consolePath = $this->container->get('kernel')->getRootDir().'/../';
+        $this->consolePath = $this->container->get('kernel')->getRootDir() . '/../';
+        $this->consoleScript = 'bin/console';
+        if (!file_exists($this->consolePath . $this->consoleScript)) {
+            $this->consoleScript = 'app/console';
+        }
         $this->taskQueueService = $this->container->get('webdevvie_pheanstalktaskqueue.service');
         $this->tube = $this->input->getOption('use-tube');
         if (strlen($this->tube) == 0) {
             $this->tube = $this->taskQueueService->getDefaultTube();
         }
         //make sure signals are respected
-        declare(ticks = 1);
+        declare(ticks = 1)
+        pcntl_signal_dispatch();
+
         pcntl_signal(SIGTERM, array($this, "sigTerm"));
         pcntl_signal(SIGINT, array($this, "sigInt"));
+    }
+
+    /**
+     * @return void
+     */
+    protected function tick()
+    {
+        pcntl_signal_dispatch();
     }
 
     /**
@@ -135,15 +155,14 @@ abstract class AbstractWorker extends ContainerAwareCommand
         $this->logger->error(
             $exception->getMessage(),
             array(
-                'class'=>get_class($exception),
-                'message'=>$exception->getMessage(),
-                'file'=>$exception->getMessage(),
-                'line'=>$exception->getMessage(),
-                'command'=>$this->getName()
+                'class' => get_class($exception),
+                'message' => $exception->getMessage(),
+                'file' => $exception->getMessage(),
+                'line' => $exception->getMessage(),
+                'command' => $this->getName()
             )
         );
     }
-
 
     /**
      * Gracefully handle the signal to terminate as soon as possible
@@ -152,7 +171,7 @@ abstract class AbstractWorker extends ContainerAwareCommand
      */
     public function sigTerm()
     {
-        $this->shutdownGracefully=true;
+        $this->shutdownGracefully = true;
         $this->verboseOutput("<info>Received Shutdown signal</info>");
     }
 
@@ -163,8 +182,8 @@ abstract class AbstractWorker extends ContainerAwareCommand
      */
     public function sigInt()
     {
-        $this->shutdownNow=true;
-        $this->shutdownGracefully=true;
+        $this->shutdownNow = true;
+        $this->shutdownGracefully = true;
         $this->verboseOutput("<info>Received Interrupt signal</info>");
     }
 

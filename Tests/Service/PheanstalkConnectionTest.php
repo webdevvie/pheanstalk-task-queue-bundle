@@ -25,7 +25,7 @@ class PheanstalkConnectionTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->pheanstalk = Mockery::mock('\Pheanstalk_Pheanstalk');
+        $this->pheanstalk = Mockery::mock('Pheanstalk\Pheanstalk');
 
         $pheanstalkFactory = Mockery::mock('Webdevvie\PheanstalkTaskQueueBundle\Service\PheanstalkFactory');
         $pheanstalkFactory->shouldReceive('create')->with('localhost')->andReturn($this->pheanstalk)->once();
@@ -53,7 +53,7 @@ class PheanstalkConnectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testIfDeleteWrapsProperly()
     {
-        $job = Mockery::mock('\Pheanstalk_Job');
+        $job = Mockery::mock('Pheanstalk\Job');
         $this->pheanstalk->shouldReceive('delete')->with($job)->once();
         $this->connection->delete($job);
     }

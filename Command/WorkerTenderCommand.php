@@ -84,6 +84,7 @@ class WorkerTenderCommand extends AbstractWorker
         $this->initialiseWorker($input, $output);
         $this->verboseOutput("<info>Starting up</info>");
         while ($this->keepWorking) {
+            $this->tick();
             //do stuff
             //check if the processes are still working
             foreach ($this->family as $key => &$child) {
@@ -272,6 +273,7 @@ class WorkerTenderCommand extends AbstractWorker
     {
         $child = new ChildProcessContainer(
             $this->consolePath,
+            $this->consoleScript,
             $this->input->getOption('worker-command'),
             $this->tube,
             $this

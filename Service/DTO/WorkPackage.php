@@ -4,7 +4,7 @@ namespace Webdevvie\PheanstalkTaskQueueBundle\Service\DTO;
 
 use Webdevvie\PheanstalkTaskQueueBundle\Entity\Task;
 use Webdevvie\PheanstalkTaskQueueBundle\TaskDescription\TaskDescriptionInterface;
-use \Pheanstalk_Job;
+use Pheanstalk\Job;
 
 /**
  * Class WorkPackage
@@ -18,7 +18,7 @@ class WorkPackage
 {
     /**
      * Contains the original task
-     * @var Pheanstalk_Job
+     * @var Job
      */
     protected $originalTask;
 
@@ -37,10 +37,10 @@ class WorkPackage
      * Constructs the WorkPackage class
      *
      * @param Task $entity
-     * @param Pheanstalk_Job $job
+     * @param Job $job
      * @param TaskDescriptionInterface $taskDescription
      */
-    public function __construct(Task $entity, Pheanstalk_Job $job, TaskDescriptionInterface $taskDescription)
+    public function __construct(Task $entity, Job $job, TaskDescriptionInterface $taskDescription)
     {
         $this->job = $job;
         $this->taskDescription=$taskDescription;
@@ -58,9 +58,9 @@ class WorkPackage
     }
 
     /**
-     * Returns the saved Pheanstalk_Job
+     * Returns the saved Job
      *
-     * @return Pheanstalk_Job
+     * @return Job
      */
     public function getPheanstalkJob()
     {

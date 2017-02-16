@@ -1,5 +1,4 @@
 <?php
-
 namespace Webdevvie\PheanstalkTaskQueueBundle\Command\Tender;
 
 use Leezy\PheanstalkBundle\Proxy\PheanstalkProxy;
@@ -35,6 +34,12 @@ class ChildProcessContainer
      * @var string
      */
     private $consolePath;
+
+    /**
+     * The name of the console file
+     * @var string
+     */
+    private $consoleScript;
 
     /**
      * The command used for the workers
@@ -97,14 +102,16 @@ class ChildProcessContainer
     /**
      * Constructs the class
      *
-     * @param string $consolePath
-     * @param string $workerCommand
-     * @param string $tube
+     * @param string         $consolePath
+     * @param string         $consoleScript
+     * @param string         $workerCommand
+     * @param string         $tube
      * @param AbstractWorker $parent
      */
-    public function __construct($consolePath, $workerCommand, $tube, AbstractWorker $parent)
+    public function __construct($consolePath, $consoleScript, $workerCommand, $tube, AbstractWorker $parent)
     {
         $this->consolePath = $consolePath;
+        $this->consoleScript = $consoleScript;
         $this->workerCommand = $workerCommand;
         $this->tube = $tube;
         $this->parent = $parent;
@@ -152,7 +159,6 @@ class ChildProcessContainer
         } else {
             return true;
         }
-
     }
 
     /**
@@ -178,7 +184,6 @@ class ChildProcessContainer
         } else {
             $this->status = self::STATUS_CLEANEDUP;
         }
-
     }
 
     /**
@@ -249,7 +254,7 @@ class ChildProcessContainer
      */
     public function start()
     {
-        $cmd = 'app/console ' . $this->workerCommand;
+        $cmd = $this->consoleScript . ' ' . $this->workerCommand;
         if ($this->tube != '') {
             $cmd .= ' --use-tube=' . escapeshellarg($this->tube);
         }
@@ -309,14 +314,14 @@ class ChildProcessContainer
             //ready for bed
             return;
         }
-        if($this->status  == ChildProcessContainer::STATUS_DEAD)
-        {
+        if ($this->status == ChildProcessContainer::STATUS_DEAD) {
             // do nothing
-        }
-        else if ($this->status == ChildProcessContainer::STATUS_BUSY) {
-            $this->status = ChildProcessContainer::STATUS_BUSY_BUT_SLEEPY;
         } else {
-            $this->status = ChildProcessContainer::STATUS_SLEEPY;
+            if ($this->status == ChildProcessContainer::STATUS_BUSY) {
+                $this->status = ChildProcessContainer::STATUS_BUSY_BUT_SLEEPY;
+            } else {
+                $this->status = ChildProcessContainer::STATUS_SLEEPY;
+            }
         }
         if ($this->process->isRunning()) {
             $this->sendTERMSignal();

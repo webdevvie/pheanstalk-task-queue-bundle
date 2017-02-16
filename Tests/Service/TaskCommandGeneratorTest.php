@@ -25,7 +25,7 @@ class TaskCommandGeneratorTest extends \PHPUnit_Framework_TestCase
         $exampleTask = new ExampleTaskDescription();
         $exampleTask->message = 'test';
         $exampleTask->wait = 3;
-        $job = new \Pheanstalk_Job(1, '666');
+        $job = new Pheanstalk\Job(1, '666');
         $task = new Task($exampleTask, '666', 'testtube');
 
         $workPackage = new WorkPackage($task, $job, $exampleTask);

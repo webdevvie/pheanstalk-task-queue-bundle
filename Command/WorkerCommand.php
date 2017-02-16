@@ -59,7 +59,8 @@ class WorkerCommand extends AbstractWorker
             'webdevvie_pheanstalk_taskqueue.task_command_generator'
         );
         $this->verboseOutput("<info>Taskworker observing tube:</info>" . $this->tube);
-        while ($this->keepWorking) {
+        while ($this->keepWorking && !$this->shutdownGracefully && !$this->shutdownNow) {
+            $this->tick();
             try {
                 $taskObject = $this->taskQueueService->reserveTask($this->tube);
             } catch (TaskQueueServiceException $exception) {
@@ -92,7 +93,7 @@ class WorkerCommand extends AbstractWorker
             $this->taskQueueService->markFailed($taskObject, $logMessage);
             return;
         }
-        $fullCommand = 'exec app/console ' . $command;
+        $fullCommand = 'exec '.$this->consoleScript.' ' . $command;
         $this->verboseOutput("<info>[[CHILD::BUSY]]:</info>" . $command);
         $process = new Process($fullCommand, $this->consolePath, null, null, null);
         $process->start();

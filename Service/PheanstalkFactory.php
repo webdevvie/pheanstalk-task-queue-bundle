@@ -2,8 +2,8 @@
 
 namespace Webdevvie\PheanstalkTaskQueueBundle\Service;
 
-use \Pheanstalk_PheanstalkInterface;
-use \Pheanstalk_Pheanstalk;
+use Pheanstalk\PheanstalkInterface;
+use Pheanstalk\Pheanstalk;
 
 /**
  * Class PheanstalkFactory
@@ -15,10 +15,10 @@ class PheanstalkFactory
 {
     /**
      * @param string $serverHost
-     * @return Pheanstalk_Pheanstalk
+     * @return Pheanstalk
      */
     public function create($serverHost)
     {
-        return new \Pheanstalk_Pheanstalk($serverHost);
+        return new Pheanstalk($serverHost);
     }
 }

@@ -120,7 +120,7 @@ Create a symfony2 command and have it receive an option or argument that does th
 the options and/or arguments. Make sure you send just an id or something similar. Sending the entire workload along via
 command line is not advised.
 
-Fill in your "Creation" and email code here and test if your command works by manually calling it using app/console
+Fill in your "Creation" and email code here and test if your command works by manually calling it using app/console or bin/console
 
 Check out PheanstalkTaskQueueBundle/Command/ExampleWorkerCommand.php for an example.
 
