@@ -72,7 +72,6 @@ class WorkerCommand extends AbstractWorker
     {
         $this->initialiseWorker($input, $output);
         $this->keepAliveTimeout = $input->getOption('keepaliveTimeout', 60);
-        $this->keepAliveTimeout = 5;
         $this->lastKeepdbalive = time();
         $this->taskCommandGenerator = $this->getContainer()->get(
             'webdevvie_pheanstalk_taskqueue.task_command_generator'
