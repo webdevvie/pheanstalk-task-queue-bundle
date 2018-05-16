@@ -34,7 +34,7 @@ class WorkerCommand extends AbstractWorker
     /**
      * @var integer
      */
-    private $lastKeepalive = 0;
+    private $lastKeepdbalive = 0;
 
     /**
      * @var integer
@@ -73,7 +73,7 @@ class WorkerCommand extends AbstractWorker
         $this->initialiseWorker($input, $output);
         $this->keepAliveTimeout = $input->getOption('keepaliveTimeout', 60);
         $this->keepAliveTimeout = 5;
-        $this->lastKeepalive = time();
+        $this->lastKeepdbalive = time();
         $this->taskCommandGenerator = $this->getContainer()->get(
             'webdevvie_pheanstalk_taskqueue.task_command_generator'
         );
