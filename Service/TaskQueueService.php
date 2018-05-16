@@ -67,10 +67,10 @@ class TaskQueueService
     private $databaseDisabled = false;
 
     /**
-     * @param EntityManager $entityManager
+     * @param EntityManager        $entityManager
      * @param PheanstalkConnection $beanstalk
-     * @param Serializer $serializer
-     * @param array $params
+     * @param Serializer           $serializer
+     * @param array                $params
      */
     public function __construct(
         \Doctrine\ORM\EntityManager $entityManager,
@@ -95,6 +95,16 @@ class TaskQueueService
     public function disableDatabase()
     {
         $this->databaseDisabled = true;
+    }
+
+    /**
+     * @return void
+     */
+    public function keepDbAlive()
+    {
+        if (!$this->databaseDisabled) {
+            $this->taskRepo->find(1);
+        }
     }
 
     /**
@@ -125,7 +135,7 @@ class TaskQueueService
 
     /**
      * @param TaskDescriptionInterface $task
-     * @param string $tube (optional) the tube to use
+     * @param string                   $tube (optional) the tube to use
      * @throws TaskQueueServiceException
      * @return integer
      */
@@ -146,7 +156,6 @@ class TaskQueueService
         $this->beanstalk
             ->useTube($tube)
             ->put($stringVersion);
-
         return $taskEntity->getId();
     }
 
@@ -251,7 +260,6 @@ class TaskQueueService
             //remake the task entity
             $taskEntity = new Task($taskObject, '', $tube);
         }
-
         if (!($taskEntity instanceof Task)) {
             $this->beanstalk->delete($inTask);
             throw new TaskQueueServiceException(
@@ -270,7 +278,7 @@ class TaskQueueService
      * Deletes a task from the queue
      *
      * @param WorkPackage $task
-     * @param string $log
+     * @param string      $log
      * @throws TaskQueueServiceException
      * @return void
      */
@@ -287,7 +295,7 @@ class TaskQueueService
      * Marks a job as failed and deletes it from the beanstalk tube
      *
      * @param WorkPackage $task
-     * @param string $log
+     * @param string      $log
      * @throws TaskQueueServiceException
      * @return void
      */
@@ -304,7 +312,7 @@ class TaskQueueService
      * Writes the log to the Task entity
      *
      * @param WorkPackage $task
-     * @param string $log
+     * @param string      $log
      * @return void
      * @throws TaskQueueServiceException
      */
@@ -327,7 +335,7 @@ class TaskQueueService
      * Updates the task status
      *
      * @param WorkPackage $task
-     * @param string $status
+     * @param string      $status
      * @return void
      * @throws TaskQueueServiceException
      */

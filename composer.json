@@ -33,7 +33,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.4.0-dev"
+            "dev-master": "0.4.1-dev"
         }
     },
     "target-dir": "Webdevvie/PheanstalkTaskQueueBundle"

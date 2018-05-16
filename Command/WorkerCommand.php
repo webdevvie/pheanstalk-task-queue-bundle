@@ -2,7 +2,6 @@
 
 namespace Webdevvie\PheanstalkTaskQueueBundle\Command;
 
-
 use JMS\Serializer\SerializerBuilder;
 use Webdevvie\PheanstalkTaskQueueBundle\Command\AbstractWorker;
 use Webdevvie\PheanstalkTaskQueueBundle\Service\DTO\WorkPackage;
@@ -33,6 +32,16 @@ class WorkerCommand extends AbstractWorker
     private $taskCommandGenerator;
 
     /**
+     * @var integer
+     */
+    private $lastKeepalive = 0;
+
+    /**
+     * @var integer
+     */
+    private $keepAliveTimeout = 60;
+
+    /**
      * {@inheritDoc}
      *
      * @return void
@@ -40,14 +49,21 @@ class WorkerCommand extends AbstractWorker
     protected function configure()
     {
         $this->setName('taskqueue:task-worker')
-            ->setDescription('Runs the task queue');
+            ->setDescription('Runs the task queue')
+            ->addOption(
+                'keepaliveTimeout',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'the timeout to use',
+                60
+            );
         $this->addDefaultConfiguration();
     }
 
     /**
      * {@inheritDoc}
      *
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
      * @return void
      * @throws \InvalidArgumentException
@@ -55,11 +71,16 @@ class WorkerCommand extends AbstractWorker
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->initialiseWorker($input, $output);
+        $this->keepAliveTimeout = $input->getOption('keepaliveTimeout', 60);
+        $this->keepAliveTimeout = 5;
+        $this->lastKeepalive = time();
         $this->taskCommandGenerator = $this->getContainer()->get(
             'webdevvie_pheanstalk_taskqueue.task_command_generator'
         );
         $this->verboseOutput("<info>Taskworker observing tube:</info>" . $this->tube);
+        $this->verboseOutput("<info>Keepalive for db timeout in seconds:</info>" . $this->keepAliveTimeout);
         while ($this->keepWorking) {
+            $this->keepDbAlive();
             try {
                 $taskObject = $this->taskQueueService->reserveTask($this->tube);
             } catch (TaskQueueServiceException $exception) {
@@ -75,6 +96,18 @@ class WorkerCommand extends AbstractWorker
             if ($this->shutdownNow || $this->shutdownGracefully) {
                 $this->keepWorking = false;
             }
+        }
+    }
+
+    /**
+     * @return void
+     */
+    private function keepDbAlive()
+    {
+        if ($this->lastKeepdbalive < time() - $this->keepAliveTimeout) {
+            $this->lastKeepdbalive = time();
+            $this->verboseOutput("<info>Keep DB alive!:</info>" . $this->tube);
+            $this->taskQueueService->keepDbAlive();
         }
     }
 
@@ -137,7 +170,7 @@ class WorkerCommand extends AbstractWorker
      * @param boolean &$failed
      * @param boolean &$hasReceivedSignal
      * @param integer &$exitCode
-     * @param string &$exitCodeText
+     * @param string  &$exitCodeText
      * @return void
      */
     private function handleRunningProcess(
