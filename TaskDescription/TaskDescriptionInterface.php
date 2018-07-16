@@ -2,7 +2,7 @@
 
 namespace Webdevvie\PheanstalkTaskQueueBundle\TaskDescription;
 
-use Pheanstalk_Job;
+use Pheanstalk\Job;
 use Webdevvie\PheanstalkTaskQueueBundle\Entity\Task;
 
 /**

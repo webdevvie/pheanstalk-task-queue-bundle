@@ -50,7 +50,7 @@ class PheanstalkConnection
 
     /**
      * Deletes a job
-     * @param \Pheanstalk_Job $job
+     * @param Job $job
      */
     public function delete($job)
     {
