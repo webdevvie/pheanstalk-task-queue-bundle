@@ -2,8 +2,9 @@
 
 namespace Webdevvie\PheanstalkTaskQueueBundle\Service;
 
-use \Pheanstalk_PheanstalkInterface;
-use \Pheanstalk_Pheanstalk;
+use Pheanstalk\Job;
+use Pheanstalk\Pheanstalk;
+use Pheanstalk\PheanstalkInterface;
 
 /**
  * Class PheanstalkConnection
@@ -14,7 +15,7 @@ use \Pheanstalk_Pheanstalk;
 class PheanstalkConnection
 {
     /**
-     * @var \Pheanstalk_Pheanstalk
+     * @var PheanstalkInterface
      */
     private $pheanstalk;
 
@@ -39,9 +40,9 @@ class PheanstalkConnection
      */
     public function put(
         $data,
-        $priority = \Pheanstalk_PheanstalkInterface::DEFAULT_PRIORITY,
-        $delay = \Pheanstalk_PheanstalkInterface::DEFAULT_DELAY,
-        $timeToRun = \Pheanstalk_PheanstalkInterface::DEFAULT_TTR
+        $priority = PheanstalkInterface::DEFAULT_PRIORITY,
+        $delay = PheanstalkInterface::DEFAULT_DELAY,
+        $timeToRun = PheanstalkInterface::DEFAULT_TTR
     ) {
         $this->pheanstalk->put($data, $priority, $delay, $timeToRun);
         return $this;
@@ -72,7 +73,7 @@ class PheanstalkConnection
      * Reserves a job
      *
      * @param integer $timeout timeout in seconds
-     * @return bool|object|\Pheanstalk_Job
+     * @return bool|object|Job
      */
     public function reserve($timeout)
     {
