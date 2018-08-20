@@ -79,6 +79,7 @@ class WorkerCommand extends AbstractWorker
         $this->verboseOutput("<info>Taskworker observing tube:</info>" . $this->tube);
         $this->verboseOutput("<info>Keepalive for db timeout in seconds:</info>" . $this->keepAliveTimeout);
         while ($this->keepWorking) {
+
             $this->keepDbAlive();
             try {
                 $taskObject = $this->taskQueueService->reserveTask($this->tube);
@@ -92,6 +93,7 @@ class WorkerCommand extends AbstractWorker
             } elseif (is_object($taskObject)) {
                 $this->verboseOutput("Ignoring type:" . get_class($taskObject));
             }
+            pcntl_signal_dispatch();
             if ($this->shutdownNow || $this->shutdownGracefully) {
                 $this->keepWorking = false;
             }
