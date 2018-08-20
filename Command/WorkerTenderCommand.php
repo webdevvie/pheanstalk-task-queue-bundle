@@ -92,7 +92,7 @@ class WorkerTenderCommand extends AbstractWorker
             $this->familyPlanning();
             //go to sleep for a bit
             usleep(100000);
-            pcntl_signal_dispatch()
+            pcntl_signal_dispatch();
         }
         $this->verboseOutput("<info>DONE!</info>");
     }
