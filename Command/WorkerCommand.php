@@ -74,7 +74,7 @@ class WorkerCommand extends AbstractWorker
         $this->keepAliveTimeout = $input->getOption('keepaliveTimeout', 60);
         $this->lastKeepdbalive = time();
         $this->taskCommandGenerator = $this->getContainer()->get(
-            'webdevvie_pheanstalk_taskqueue.task_command_generator'
+            'webdevvie_pheanstalktaskqueue.task_command_generator'
         );
         $this->verboseOutput("<info>Taskworker observing tube:</info>" . $this->tube);
         $this->verboseOutput("<info>Keepalive for db timeout in seconds:</info>" . $this->keepAliveTimeout);
